@@ -37,10 +37,10 @@
 <body>
     
 	<div class="item login" tapmode="itemhover" onclick="openNewWin('login')" id="topbar">
-		<div class="itemlogo userlogo"><img src="../image/m_drawer_icon_default_avt.png" alt=""></div>
+		<div class="itemlogo userlogo" id="avatar"><img src="../image/m_drawer_icon_default_avt.png" alt=""></div>
 		<div class="itemshelf">
 			<div class="shelfinfo01">个人中心</div>
-			<div class="shelfinfo02">登陆可享更多特权</div>
+			<div class="shelfinfo02" id="username">登陆可享更多特权</div>
 		</div>
 	</div>
 
@@ -58,18 +58,6 @@
 			
 		</div>
 	</div>
-	<div class="item" tapmode="itemhover" onclick="openNewWin('giftcenter')">
-		<div class="itemlogo"><img src="../image/menu_icon_gift.png" alt=""></div>
-		<div class="itemshelf">
-			<div class="shelfinfo01">礼品中心</div>
-		</div>
-	</div>
-	<div class="item" tapmode="itemhover" onclick="openNewWin('invite')">
-		<div class="itemlogo"><img src="../image/menu_icon_invitation.png" alt=""></div>
-		<div class="itemshelf">
-			<div class="shelfinfo01">邀请好友</div>
-		</div>
-	</div>
 	<div class="item" tapmode="itemhover" onclick="openNewWin('aboutus')">
 		<div class="itemlogo"><img src="../image/menu_icon_about.png" alt=""></div>
 		<div class="itemshelf">
@@ -77,15 +65,12 @@
 		</div>
 	</div>
 
-	<div class="item foodphone" tapmode="itemhover" onclick="openNewWin('foodphone')">
-		<div class="itemlogo"><img src="../image/drawer_icon_camera.png" alt=""></div>
-		<div class="itemshelf">
-			<div class="shelfinfo01">美食相机</div>
-		</div>
-	</div>
-
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/quickos.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
 <script type="text/javascript">
 	function closeSlide () {
 		api.closeSlidPane();
@@ -106,10 +91,51 @@
 		});
     }
 
+
+
     apiready = function(){
 
         var header = $api.byId('topbar');
-        $api.fixIos7Bar(header); 
+        $api.fixIos7Bar(header);
+		//跨页面调用事件
+        api.addEventListener({
+            name: 'init-homefixed'
+        }, function(ret, err) {
+            init();
+        });
+        init();
+        //初始化
+		function init()
+		{
+            getUserinfo();
+		}
+        //获取用户信息
+        function getUserinfo()
+        {
+            if($api.getStorage("isLogin"))
+            {
+
+                var url=config.user.getUserInfo;
+                Quickos.api.get(url,function(ret)
+                {
+                    if(ret)
+                    {
+                        if(ret.success)
+                        {
+                            //存储用户信息
+                            $api.setStorage("member",ret.data.member);
+                            //绑定用户名信息
+                            $("#username").text(ret.data.member.name);
+                            //绑定头像信息
+                            if(ret.data.member.avatar)
+                            {
+                                $("#avatar").html('<img src="'+ret.data.member.avatar+'" alt="">');
+                            }
+                        }
+                    }
+                });
+            }
+        }
     }
 
 </script>

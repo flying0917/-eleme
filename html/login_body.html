@@ -96,7 +96,15 @@
 <script type="text/javascript">
 
 function goback () {
-	api.closeWin({name:'login_body'})
+    //更新用户中心页面
+    api.sendEvent({
+        name: 'init-usercenter',
+        extra: {}
+    });
+    setTimeout(function()
+    {
+        api.closeWin({name:'login_body'});
+    },500)
 }
 	apiready = function() {
 		var header = $api.byId('topbar');
@@ -117,9 +125,10 @@ function goback () {
 //登录操作
 function login()
 {
-    var name=$("#name").val();
+    var name=$("#user").val();
     var password=$("#passwd").val();
     var url=config.user.login+"&name="+name+"&password="+password;
+    console.log(url);
     Quickos.api.post(url,{},function(ret)
     {
         console.log(JSON.stringify(ret));
@@ -132,9 +141,10 @@ function login()
                         msg:"登录成功",
                         duration:1000
                     });
+                $api.setStorage("isLogin",1);
                 setTimeout(function()
                 {
-                    api.closeWin();
+                    goback ();
                 },1000)
             }
             else

@@ -15,6 +15,10 @@
         var that = this;
         params.data.values = $.extend({},params.data.values,{fromApp:true});
         api.ajax(params, function (ret, err) {
+
+            console.log(params.url);
+            console.log(JSON.stringify(ret));
+
             if ('' != err && undefined != err) {
                 if ( errdebug ) {
                     alert("-----【AJAX ERR】-----" +

@@ -40,7 +40,7 @@
     <div class="header" id="topbar">
        <div class="left" tapmode="headerhover" onclick="goback()">
             <img src="../image/abc_ic_ab_back_holo_dark.png" alt="" class="logoleft"><img src="../image/m_drawer_icon_home_selected.png" alt="" class="logo">
-            <span class="title">【连锁】丽华快餐</span>
+            <span class="title" id="title">饭店</span>
         </div>
         <div class="right" tapmode="headerhover" onclick="openNewWin('search')"><img src="../image/icon_search.png" alt=""></div>
     </div>
@@ -57,6 +57,11 @@
 
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/quickos.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
 <script type="text/javascript">
     // 记录当前第几个frame
     var frameIndexNow = 0;
@@ -131,6 +136,11 @@
     apiready = function() {
         var header = $api.byId('topbar');
         $api.fixIos7Bar(header);
+        if(api.pageParam.name)
+        {
+            var name=api.pageParam.name;
+            $("#title").text(name);
+        }
         var headerHeight = $api.byId('topbar').offsetHeight;
         var scrollHeight = $api.dom('.navbar').offsetHeight;
 
@@ -147,11 +157,19 @@
                     name: 'menuclassify',
                     url: './menuclassify.html',
                     bounces: false,
+                    pageParam:
+                        {
+                            id:api.pageParam.id
+                        }
                 },
                 {
                     name: 'shopinfo',
                     url: './shopinfo.html',
                     bounces: false,
+                    pageParam:
+                        {
+                            id:api.pageParam.id
+                        }
                 }
             ]
         }, function (ret) {

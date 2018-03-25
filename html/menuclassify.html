@@ -67,95 +67,9 @@
     </style>
 </head>
 <body>
-    <div class="section01">接受预定中，10:30开始送餐</div>
+    <div class="darktitle">菜单</div>
+    <div id="content">
 
-    <div class="item section02">
-        <div class="itemshelf">
-            <div class="shelfinfo01">快用微信拼单</div>
-            <div class="shelfinfo03">和你的小伙伴一起来订餐吧</div>
-        </div>
-        <div class="buybtn">
-            <p><img src="../image/weixin_iner_icon.png" alt="" class="weixin">微信拼单</p>
-        </div>
-    </div>
-
-    <img src="../image/shopdetailcover.png" alt="" class="shopcover">
-
-    <div class="darktitle">新品/促销</div>
-    <div class="item style2">
-        <div class="itemshelf">
-            <div class="shelfinfo01">大排</div>
-            <div class="shelfinfo03">25元五香大排套餐</div>
-            <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;月售6630份</div>
-        </div>
-        <div class="buybtn">
-            <p tapmode="" onclick="buyfood(0)">￥25</p>
-            <span class="minusorder">
-                <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
-                <span class="minus" tapmode="" onclick="minuscash(0)">－</span>
-            </span>
-            
-        </div>
-    </div>
-
-
-
-    <div class="darktitle">商务套餐</div>
-    <div class="item style2">
-        <div class="itemshelf">
-            <div class="shelfinfo01">20元</div>
-            <div class="shelfinfo03">20元商务套餐</div>
-            <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;月售14438份</div>
-        </div>
-        <div class="buybtn"><p tapmode="" onclick="buyfood(1)">￥20</p>
-            <span class="minusorder">
-                <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
-                <span class="minus" tapmode="" onclick="minuscash(1)">－</span>
-            </span>
-        </div>
-    </div>
-    <div class="item style2">
-        <div class="itemshelf">
-            <div class="shelfinfo01">卤肉</div>
-            <div class="shelfinfo03">20元香菇卤肉套餐</div>
-            <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;月售9587份</div>
-        </div>
-        <div class="buybtn"><p tapmode="" onclick="buyfood(2)">￥20</p>
-            <span class="minusorder">
-                <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
-                <span class="minus" tapmode="" onclick="minuscash(2)">－</span>
-            </span>
-        </div>
-    </div>
-
-
-
-    <div class="darktitle">精品商务套餐</div>
-    <div class="item style2">
-        <div class="itemshelf">
-            <div class="shelfinfo01">30元</div>
-            <div class="shelfinfo03">30元商务套餐</div>
-            <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;月售2602份</div>
-        </div>
-        <div class="buybtn"><p tapmode="" onclick="buyfood(3)">￥30</p>
-            <span class="minusorder">
-                <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
-                <span class="minus" tapmode="" onclick="minuscash(3)">－</span>
-            </span>
-        </div>
-    </div>
-    <div class="item style2">
-        <div class="itemshelf">
-            <div class="shelfinfo01">排骨</div>
-            <div class="shelfinfo03">30元红烧排骨套餐</div>
-            <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;月售2122份</div>
-        </div>
-        <div class="buybtn"><p tapmode="" onclick="buyfood(4)">￥30</p>
-            <span class="minusorder">
-                <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
-                <span class="minus" tapmode="" onclick="minuscash(4)">－</span>
-            </span>
-        </div>
     </div>
 
     <div class="h50"></div>
@@ -168,6 +82,12 @@
 
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/quickos.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../template/shop.js"></script>
 <script type="text/javascript">
 var totalcash = 0;
 var buynum = 0;
@@ -289,6 +209,33 @@ function openNewWin() {
         },
         bounces: false
     });
+}
+
+apiready=function()
+{
+    init();
+    function init()
+    {
+        getMenuList();
+    }
+
+    //获取饭店列表
+    function getMenuList()
+    {
+        var url=config.shop.getShopMenus+"&shop_id="+api.pageParam.id;
+        Quickos.api.get(url,function(ret)
+        {
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    var temStr=doT.template(shopTemplate.menuItemTpl())(ret.data.menus);
+                    console.log(temStr)
+                    $("#content").html(temStr);
+                }
+            }
+        });
+    }
 }
 </script>
 </html>

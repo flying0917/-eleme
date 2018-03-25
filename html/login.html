@@ -42,6 +42,11 @@
         /* 悬浮样式 */
         .itemhover {background-color: #eee;}
         .headerhover {background-color: #36A8DC;}
+
+        .hidden
+        {
+            display:none;
+        }
     </style>
 </head>
 <body>
@@ -50,30 +55,46 @@
             <img src="../image/icon_drawer_burger.png" alt="" class="logoleft"><img src="../image/m_drawer_icon_home_selected.png" alt="" class="logo">
             <span class="title">个人中心</span>
         </div>
-        <div class="right" tapmode="headerhover" onclick="openNewWin('login_body')"><img src="../image/more_setting.png" alt=""></div>
     </div>
 
     <div class="content">
         <img src="../image/uer_center_header_bg.png" alt="" class="loginbg">
         <div class="loginbox">
-            <div class="avatar"><img src="../image/user_center_default_avatar.png" alt=""></div>
-            <div class="shelf" tapmode="" >
+            <div class="avatar" id="avatar"><img src="../image/user_center_default_avatar.png" alt=""></div>
+            <div class="shelf hidden" id="login-content" tapmode="" style="">
                 <div class="shelf01" onclick="openNewWin('login_body')">登陆</div>
                 <div class="shelf02" onclick="openNewWin('signup')">注册</div>
+            </div>
+
+            <div class="shelf hidden" id="user-content" tapmode="">
+                <div class="shelf01" id="username">flying0917</div>
+                <div class="shelf02" id="mobile">1502424388@qq.com</div>
             </div>
         </div>
 
         <div class="useritem">
-            <div class="shelf01" tapmode="itemhover" onclick="openNewWin('login_body')">账户信息</div>
-            <div class="shelf02" tapmode="itemhover" onclick="openNewWin('login_body')">我的红包</div>
+            <div class="shelf01" tapmode="itemhover">账户信息</div>
+            <div class="shelf02" tapmode="itemhover">我的红包</div>
         </div>
     </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/quickos.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
 <script type="text/javascript">
 
 function goback () {
-    api.closeWin({name:'login'});
+    //更新用户中心页面
+    api.sendEvent({
+        name: 'init-homefixed',
+        extra: {}
+    });
+    setTimeout(function()
+    {
+        api.closeWin({name:'login'});
+    },500)
 }
 
 function openNewWin (type) {
@@ -94,7 +115,56 @@ function openNewWin (type) {
 apiready = function(){
 
     var header = $api.byId('topbar');
-    $api.fixIos7Bar(header); 
+    $api.fixIos7Bar(header);
+
+    api.addEventListener({
+        name: 'init-usercenter'
+    }, function(ret, err) {
+        init();
+    });
+
+    init();
+    //初始化
+    function init()
+    {
+        getUserinfo();
+    }
+
+    function getUserinfo()
+    {
+        if($api.getStorage("isLogin"))
+        {
+            $("#login-content").addClass("hidden");
+            $("#user-content").removeClass("hidden");
+            var url=config.user.getUserInfo;
+            Quickos.api.get(url,function(ret)
+            {
+                if(ret)
+                {
+                    if(ret.success)
+                    {
+                        //存储用户信息
+                        $api.setStorage("member",ret.data.member);
+                        //绑定用户名信息
+                        $("#username").text(ret.data.member.name);
+                        //绑定手机号码信息
+                        var mobile=ret.data.member.mobile?ret.data.member.mobile:"暂无绑定手机号";
+                        $("#mobile").text(mobile);
+                        //绑定头像信息
+                        if(ret.data.member.avatar)
+                        {
+                            $("#avatar").html('<img src="'+ret.data.member.avatar+'" alt="">');
+                        }
+                    }
+                }
+            });
+        }
+        else
+        {
+            $("#user-content").addClass("hidden");
+            $("#login-content").removeClass("hidden");
+        }
+    }
 }
 </script>
 </html>
