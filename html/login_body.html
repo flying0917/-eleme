@@ -89,6 +89,10 @@
 	</form>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/quickos.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
 <script type="text/javascript">
 
 function goback () {
@@ -114,10 +118,11 @@ function goback () {
 function login()
 {
     var name=$("#name").val();
-    var password=$("#password").val();
-    var url=config.user.login;
-    Quickos.app.post(url,{name:name,password:password},function(ret)
+    var password=$("#passwd").val();
+    var url=config.user.login+"&name="+name+"&password="+password;
+    Quickos.api.post(url,{},function(ret)
     {
+        console.log(JSON.stringify(ret));
         if(ret)
         {
             if(ret.success)
@@ -134,7 +139,7 @@ function login()
             }
             else
             {
-                $("#err-tip").text(ret.errorText);
+                $("#err-tip").text(ret.msg);
             }
         }
     });

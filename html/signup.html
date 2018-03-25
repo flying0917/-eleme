@@ -94,6 +94,7 @@
 	</form>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
 <script type="text/javascript" src="../script/quickos.js"></script>
 <script type="text/javascript" src="../script/config.js"></script>
 <script type="text/javascript">
@@ -121,10 +122,10 @@ function goback () {
 	function signup()
 	{
 	    var name=$("#name").val();
-	    var password=$("#password").val();
-	    var repassword=$("#repassword").val();
+	    var password=$("#passwd").val();
+	    var repassword=$("#repasswd").val();
 		var url=config.user.signup;
-	    Quickos.app.post(url,{name:name,password1:password,password2:repassword},function(ret)
+	    Quickos.api.post(url,{name:name,password1:password,password2:repassword},function(ret)
 		{
 		    if(ret)
 			{
@@ -143,6 +144,10 @@ function goback () {
 				else
 				{
 				    $("#err-tip").text(ret.errorText);
+				    api.toast({
+						msg:ret.errorText,
+						duration:1000
+					});
 				}
 			}
 		});

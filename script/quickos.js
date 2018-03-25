@@ -1,62 +1,21 @@
 (function (window) {
-    //_API_SITE_ = 'http://113.106.2.244:89/appapi.php';
-    _API_SITE_ = 'http://120.25.149.49:6888/appapi.php';
+    _API_SITE_ = '104.129.182.213';
+    //_API_SITE_ = 'http://120.25.149.49:6888/appapi.php';
     //_API_SITE_='http://192.168.40.200/appapi.php';
     var http_api = {};
     var app = {};
     var quickos = {};
-    var retdebug = 1;
-    var errdebug = 1;
+    var retdebug = 0;
+    var errdebug = 0;
     http_api.ajax = function (params, callback, allowGuest) {
         allowGuest = allowGuest || false;
         params.returnAll = true;
         params.headers = {};
         params.cache = false;
-        params.timeout = 3000;
         var that = this;
         params.data.values = $.extend({},params.data.values,{fromApp:true});
-        console.log(params.url)
         api.ajax(params, function (ret, err) {
-            console.log(JSON.stringify(err))
-            var accessToken=$api.getStorage("isLogin");
-            var htmlName=$api.getHtmlName();
-            if(accessToken)
-            {
-                if(ret.body.code==400)
-                {
-                    //控制可不登录的页面不跳转登录页面
-                    if(commonUrl.tokenPage[htmlName])
-                    {
-                        setTimeout(function()
-                        {
-                            //$api.setStorage("isLogin",false);
-                            api.openWin({
-                                name: 'login',
-                                url: api.wgtRootDir + '/html/login.html',
-                                slidBackEnabled: false,
-                                pageParam: {}
-                            });
-                        },500)
-                    }
-                }
-
-            }
-            else
-            {
-                if(commonUrl.tokenPage[htmlName])
-                {
-                    setTimeout(function()
-                    {
-                        api.openWin({
-                            name: 'login',
-                            url: api.wgtRootDir + '/html/login.html',
-                            slidBackEnabled: false,
-                            pageParam: {}
-                        });
-                    },500)
-                }
-            }
-            /*if ('' != err && undefined != err) {
+            if ('' != err && undefined != err) {
                 if ( errdebug ) {
                     alert("-----【AJAX ERR】-----" +
                         "\nURL: " + params.url + 
@@ -64,17 +23,17 @@
                         "\nERR: " + JSON.stringify(err));
                 }
                 else {
-                    alert(JSON.stringify(err))
+                   /* alert(JSON.stringify(err))*/
                     api.toast({
                         msg: '网络错误，请稍后重试',
                         duration: 10000,
                         location: 'bottom'
-                });
+                    });
                 }
                 return false;
             }
             if ( retdebug ) {
-                alert('----【Request】----: ' + 
+                alert('----【Request】----: ' +
                     "\nUrl：" + params.url + 
                     "\nParams：" + JSON.stringify(params.data) +
                     "\n" + '----RES----' +
@@ -124,28 +83,22 @@
 
                     return false;
                 }
-            }*/
+            }
 
-            if(params.reqType)
-            {
-                if(params.reqType==="upload")
-                {
-                    callback(ret,err)
+// save cookies
+//$api.setStorage('cookie', ret.headers['Set-Cookie']);
+            if (params) {
+                var url = that.url("mobile/default/login");
+                if (params.url && params.url == url) {
+                    api.setPrefs({
+                        key: 'cookie',
+                        value: ret.headers['Set-Cookie']
+                    });
+//alert(ret.headers['Set-Cookie']);
                 }
             }
-            else
-            {
-                var retData;
-                if(typeof ret.body=="string")
-                {
-                    retData=JSON.parse(ret.body);
-                }
-                else
-                {
-                   retData=ret.body;
-                }
-                callback(retData, err);
-            }
+
+            callback(ret.body, err);
         });
     };
 
@@ -224,23 +177,30 @@
         });
     };
 
-    http_api.attachUpload = function (url,file_path,cb) {
-        var reqUrl = url;
-        var callback=cb;
+    http_api.attachUpload = function (file_path, module) {
+        url = this.url('main/attach/upload');//user/info/uploadavatar
         this.ajax({
             data: {
                 files: {
-                    file: file_path
+                    Filedata: file_path
+                },
+                values: {
+                    module: module
                 }
             },
-            reqType:"upload",
             dataType: 'json',
             method: 'post',
-            url: reqUrl,
-            report:true,
-            timeout:3000
+            url: url
         }, function (ret, err) {
-            callback(ret,err);
+            if (ret) {
+                //ret : icon,url,name,aid
+                return ret;
+
+            } else {
+                return err;
+            }
+
+
         });
     }
     quickos.app = app;
