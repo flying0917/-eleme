@@ -1,0 +1,63 @@
+.pop-up
+{
+    width:0;
+    height:0;
+    position:fixed;
+
+    overflow-y:auto;
+    background-color:white;
+    box-shadow:1px 1px 3px #d7d7d7;
+    border-bottom:1px solid lightgray;
+    z-index:9999;
+    font-size:12px;
+    padding:0.75rem;
+}
+.pop-up *
+{
+    font-size:12px !important;
+    text-indent:0 !important;
+}
+.pop-up-top
+{
+    top:0 !important;
+    -webkit-transition: all 0.6s;
+    -moz-transition: all 0.6s;
+    -ms-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+}
+.pop-up-bottom
+{
+    bottom:0 !important;
+    -webkit-transition: all 0.6s;
+    -moz-transition: all 0.6s;
+    -ms-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+}
+.pop-up-left
+{
+    left:0 !important;
+    -webkit-transition: all 0.6s;
+    -moz-transition: all 0.6s;
+    -ms-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+}
+.pop-up-right
+{
+    right:0 !important;
+    -webkit-transition: all 0.6s;
+    -moz-transition: all 0.6s;
+    -ms-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+}
+.pop-up-transition
+{
+    -webkit-transition: all 0.6s;
+    -moz-transition: all 0.6s;
+    -ms-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+}

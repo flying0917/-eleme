@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="../css/common.css" />
     <link rel="stylesheet" type="text/css" href="../css/idangerous.swiper.css">
 
-
     <style>
         html,body{min-height:100%;background-color: #eee;}
         body {position: relative;}
@@ -57,13 +56,15 @@
         .bottom {height: 50px;background-color: #2f373e;position: fixed;bottom: 0;width: 100%;}
         .bottom img {height: 30px;margin-top: 10px;margin-left: 15px;vertical-align: top;}
         #minbuy {float: right;color: #fff;background-color: #404850;padding: 5px 10px;margin: 11px 10px 0 0;}
-        #buyit {float: right;color: #fff;background-color: #4DC060;padding: 5px 10px;margin: 11px 10px 0 0;display: none;}
+        .btn-success {float: right;color: #fff;background-color: #4DC060;padding: 5px 10px;margin: 11px 10px 0 0;display: none;}
+        .btn-primary {float: right;color: #fff;background-color: #2982d8;padding: 5px 10px;margin: 11px 10px 0 0;display: none;}
         .bottom .buyinfo {height: 50px; line-height: 50px; color: #fff;display: none;}
         .bottom .buyinfo span {color: #fff;}
 
         /* 悬浮样式 */
         .itemhover {background-color: #eee !important;}
         .total-hover {background-color: rgba(77, 192, 96, 0.6) !important;}
+
     </style>
 </head>
 <body>
@@ -73,36 +74,49 @@
     </div>
 
     <div class="h50"></div>
-    <div class="bottom">
+    <div class="bottom" style="z-index:999999;">
         <img src="../image/cart.png" alt="">
         <span class="buyinfo" id="buyinfo"><span id="buynum">1</span>份 ￥<span id="totalcash">10</span></span>
         <span id="minbuy">￥0元起送</span>
-        <span id="buyit" tapmode="total-hover" onclick="openNewWin()">去结算</span>
-    </div>
 
+        <span  id="cartbtn" tapmode="total-hover" class="pull-right btn-primary" onclick="onAddCart()">加入购物车</span>
+        <span id="buyit" tapmode="total-hover" class="pull-right btn-success" onclick="openNewWin()">去结算</span>
+    </div>
+    <input type="hidden" id="shopname">
 </body>
+
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.js"></script>
 <script type="text/javascript" src="../script/doT.min.js"></script>
-<script type="text/javascript" src="../script/md5.min.js"></script>
 <script type="text/javascript" src="../script/quickos.js"></script>
 <script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/cart.js"></script>
 <script type="text/javascript" src="../template/shop.js"></script>
 <script type="text/javascript">
 var totalcash = 0;
 var buynum = 0;
 
-function buyfood (index) {
+function buyfood (that,index) {
+
+    var $that=$(that);
+
     var buyinfodom = document.getElementById('buyinfo');
     var buynumdom = document.getElementById('buynum');
     var totalcashdom = document.getElementById('totalcash');
     var minbuydom = document.getElementById('minbuy');
     var buyitdom = document.getElementById('buyit');
+    var addcartdom=document.getElementById('cartbtn');
     var minusorderdom = document.getElementsByClassName('minusorder');
     var thisordernumdom = document.getElementsByClassName('thisordernum');
 
+    var unitPrice=$that.attr("data-price");
+
     var num = parseInt(thisordernumdom[index].innerHTML);
     num += 1;
+
+    var $parentDom=$that.parents(".item");
+    //添加单品的数量
+    $parentDom.attr("data-count",parseInt($parentDom.attr("data-count"))+1);
 
     if (num >= 1) {
         thisordernumdom[index].innerHTML = num;
@@ -111,29 +125,15 @@ function buyfood (index) {
 
     minusorderdom[index].style.display = 'inline-block';
 
-    switch(index){
-        case 0:
-            totalcash += 25;
-            buynum += 1;
-            break;
-        case 1:
-        case 2:
-            totalcash += 20;
-            buynum += 1;
-            break;
-        case 3:
-        case 4:
-            totalcash += 30;
-            buynum += 1;
-            break;
-        default:
-            break;
-    }
+    totalcash += parseFloat(unitPrice);
+    buynum+=1;
 
     if ( totalcash == 0) {
         buyinfodom.style.display = 'none';
+        addcartdom.style.display = 'none';
     }
     else {
+        addcartdom.style.display = 'inline-block';
         buyitdom.style.display = 'inline-block';
         minbuydom.style.display = 'none';
         buyinfodom.style.display = 'inline-block';
@@ -143,17 +143,29 @@ function buyfood (index) {
     }
 }
 
-function minuscash (index) {
+function minuscash (that,index) {
+
+    var $that=$(that);
+
     var buyinfodom = document.getElementById('buyinfo');
     var buynumdom = document.getElementById('buynum');
     var totalcashdom = document.getElementById('totalcash');
     var minbuydom = document.getElementById('minbuy');
     var buyitdom = document.getElementById('buyit');
+    var addcartdom=document.getElementById('cartbtn');
     var minusorderdom = document.getElementsByClassName('minusorder');
     var thisordernumdom = document.getElementsByClassName('thisordernum');
 
     var num = thisordernumdom[index].innerHTML;
     num -= 1;
+
+    var $parentDom=$that.parents(".item");
+    //添加单品的数量
+    var count=$parentDom.attr("data-count");
+    if(parseInt(count)>0)
+    {
+        $parentDom.attr("data-count",parseInt(count)-1);
+    }
     
     if (num >= 1) {
         thisordernumdom[index].innerHTML = num;
@@ -163,7 +175,10 @@ function minuscash (index) {
         minusorderdom[index].style.display = 'none';
     }
 
-    switch(index){
+    var unitPrice=$that.attr("data-price");
+    totalcash -= parseFloat(unitPrice);
+    buynum-=1;
+    /*switch(index){
         case 0:
             totalcash -= 25;
             buynum -= 1;
@@ -180,16 +195,18 @@ function minuscash (index) {
             break;
         default:
             break;
-    }
+    }*/
 
     if ( totalcash == 0) {
         buyinfodom.style.display = 'none';
+        addcartdom.style.display = 'none';
         minbuydom .style.display = 'inline-block';
         buyitdom.style.display = 'none';
     }
     else {
         // buyitdom.style.display = 'inline-block';
         // minbuydom.style.display = 'none';
+        addcartdom.style.display = 'inline-block';
         buyinfodom.style.display = 'inline-block';
         buynumdom.innerHTML = buynum;
         totalcashdom.innerHTML = totalcash;
@@ -210,6 +227,26 @@ function openNewWin() {
         bounces: false
     });
 }
+//添加购物车
+function onAddCart()
+{
+    _cart=new CartHelper();
+    var shopName=$("#shopname").val();
+    _cart.Init(api.pageParam.id,shopName);
+    //获取数据
+    $("#content .item").each(function()
+    {
+        var id=$(this).attr("data-id");
+        var price=$(this).attr("data-price");
+        var name=$(this).attr("data-name");
+        var count=$(this).attr("data-count");
+        if(parseInt(count))
+        {
+            _cart.Add(id,name,count,price);
+        }
+        console.log(JSON.stringify(_cart.Read()))
+    });
+}
 
 apiready=function()
 {
@@ -219,7 +256,7 @@ apiready=function()
         getMenuList();
     }
 
-    //获取饭店列表
+    //获取饭店菜单列表
     function getMenuList()
     {
         var url=config.shop.getShopMenus+"&shop_id="+api.pageParam.id;
@@ -230,7 +267,8 @@ apiready=function()
                 if(ret.success)
                 {
                     var temStr=doT.template(shopTemplate.menuItemTpl())(ret.data.menus);
-                    console.log(temStr)
+
+                    $("#shopname").val(ret.data.shop.name);
                     $("#content").html(temStr);
                 }
             }
