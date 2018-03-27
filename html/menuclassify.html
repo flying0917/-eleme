@@ -80,7 +80,7 @@
         <span id="minbuy">￥0元起送</span>
 
         <span  id="cartbtn" tapmode="total-hover" class="pull-right btn-primary" onclick="onAddCart()">加入购物车</span>
-        <span id="buyit" tapmode="total-hover" class="pull-right btn-success" onclick="openNewWin()">去结算</span>
+        <span id="buyit" tapmode="total-hover" class="pull-right btn-success" onclick="confirmOrder()">去结算</span>
     </div>
     <input type="hidden" id="shopname">
 </body>
@@ -246,6 +246,69 @@ function onAddCart()
         }
         console.log(JSON.stringify(_cart.Read()))
     });
+}
+
+function confirmOrder()
+{
+
+    if($api.getStorage("isLogin"))
+    {
+        var shopName=$("#shopname").val();
+        var tem_order={
+            "shop_id":api.pageParam.id,
+            "shop_name":shopName,
+            "Count":num,
+            "Total":buynum,
+            "Items":[]
+        }
+        //获取数据
+        $("#content .item").each(function()
+        {
+            var temObj={};
+            var id=$(this).attr("data-id");
+            var price=$(this).attr("data-price");
+            var name=$(this).attr("data-name");
+            var count=$(this).attr("data-count");
+            if(parseInt(count))
+            {
+                temObj={"Id":id,"Name":name,"Count":count,"Price":price};
+                tem_order["items"].push(temObj);
+            }
+        });
+        var url=config.shop.confirmOrder;
+        var params={
+            order:JSON.stringify(temObj)
+        };
+        Quickos.api.post(url,params,function(ret)
+        {
+            console.log(JSON.stringify(ret));
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    api.toast({
+                        msg:ret.msg,
+                        duration:1000
+                    });
+                }
+                else
+                {
+                    api.toast({
+                        msg:ret.errorText,
+                        duration:1000
+                    });
+                }
+            }
+        });
+    }
+    else
+    {
+        api.toast({
+            msg:"请先登录",
+            duration:1000
+        });
+    }
+
 }
 
 apiready=function()

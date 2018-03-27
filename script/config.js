@@ -12,5 +12,6 @@ var config=
                 getShopList:_BASE_URL+"/dinner/index.php?r=site/GetShop",//获取饭店数据
                 getShopMenus:_BASE_URL+"/dinner/index.php?r=site/GetMenu",//获取饭店的菜单
                 getShopInfo:_BASE_URL+"/dinner/index.php?r=site/GetShopInfo",//获取饭店信息
+                confirmOrder:_BASE_URL+"/dinner/index.php?r=site/ConfirmOrderAjax",//确认订单
             }
     };
