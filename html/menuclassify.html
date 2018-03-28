@@ -244,7 +244,11 @@ function onAddCart()
         {
             _cart.Add(id,name,count,price);
         }
-        console.log(JSON.stringify(_cart.Read()))
+
+        api.openWin({
+            name:"buycart",
+            url:"./buycart.html"
+        });
     });
 }
 
@@ -257,8 +261,8 @@ function confirmOrder()
         var tem_order={
             "shop_id":api.pageParam.id,
             "shop_name":shopName,
-            "Count":num,
-            "Total":buynum,
+            "Count":buynum,
+            "Total":totalcash,
             "Items":[]
         }
         //获取数据
@@ -272,32 +276,15 @@ function confirmOrder()
             if(parseInt(count))
             {
                 temObj={"Id":id,"Name":name,"Count":count,"Price":price};
-                tem_order["items"].push(temObj);
+                tem_order["Items"].push(temObj);
             }
         });
-        var url=config.shop.confirmOrder;
-        var params={
-            order:JSON.stringify(temObj)
-        };
-        Quickos.api.post(url,params,function(ret)
-        {
-            console.log(JSON.stringify(ret));
-            if(ret)
-            {
-                if(ret.success)
-                {
-                    api.toast({
-                        msg:ret.msg,
-                        duration:1000
-                    });
-                }
-                else
-                {
-                    api.toast({
-                        msg:ret.errorText,
-                        duration:1000
-                    });
-                }
+        console.log(JSON.stringify(tem_order));
+        api.openWin({
+            name:"confirm",
+            url:"./confirm.html",
+            pageParam:{
+                order:tem_order
             }
         });
     }

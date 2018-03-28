@@ -44,5 +44,74 @@ var shopTemplate=
                   {{ } }}
              */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
             return tpl;
-        }
+        },
+        //确认订单模板
+        confirmTpl:function()
+        {
+            var tpl= (function tpl() {/*
+
+                  <div class="item style2" tapmode="itemhover">
+
+                      <div class="itemshelf">
+                          <div class="shelfinfo01">{{=it.shop_name}}</div>
+
+                          <div class="shelfinfo03">总额：{{=it.Total}}元</div>
+
+                      </div>
+                  </div>
+                 {{for(var x in it.Items){ }}
+                  <div class="item style2">
+                      <div class="itemshelf">
+                          <div class="shelfinfo01">{{=it.Items[x].Name}}</div>
+
+                          <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;份数：{{=it.Items[x].Count}}份</div>
+                      </div>
+
+                      <div class="buybtn"><p tapmode=""  >￥{{=it.Items[x].Price}}</p>
+
+                      </div>
+                  </div>
+                  {{ } }}
+                   <div class="item" style="padding-left:15px;">
+                       <label>收货地址</label>
+                       <br>
+                       <input style="height:30px;" type="text" placeholder="请输入您的地址" id="address">
+                   </div>
+
+             */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+            return tpl;
+        },
+        //购物车模板
+        cartTpl:function()
+        {
+            var tpl= (function tpl() {/*
+            {{for(var y in it){}}
+                <div class="item style2" tapmode="itemhover">
+
+                      <div class="itemshelf">
+                          <div class="shelfinfo01">{{=it[y].shop_name}}</div>
+
+                          <div class="shelfinfo03">总额：{{=it[y].Total}}元</div>
+
+                      </div>
+                  </div>
+                 {{for(var x in it[y].Items){ }}
+                  <div class="item style2" data-id="{{=it[x].id}}" data-price="{{=it[y].Items[x].price}}" data-name="{{=it[y].Items[x].name}}" data-count="0">
+                      <div class="itemshelf">
+                          <div class="shelfinfo01">{{=it[x].name}}</div>
+                          <div class="shelfinfo03">{{=it[x].brief}}</div>
+                          <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;月售2份</div>
+                      </div>
+                      <div class="buybtn"><p tapmode="" onclick="buyfood(this,{{=x}})" data-price="{{=it[y].Items[x].price}}">￥{{=it[y].Items[x].price}}</p>
+                          <span class="minusorder">
+                              <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
+                              <span class="minus" tapmode="" data-price="{{=it[y].Items[x].price}}" onclick="minuscash(this,{{=x}})">－</span>
+                          </span>
+                      </div>
+                  </div>
+                  {{ } }}
+                  {{ } }}
+             */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+            return tpl;
+        },
     }

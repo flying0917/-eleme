@@ -84,24 +84,24 @@
     </style>
 </head>
 <body>
-<div class="header" id="topbar">
-    <div class="left" tapmode="headerhover" onclick="goback()">
-        <img src="../image/icon_drawer_burger.png" alt="" class="logoleft"><img src="../image/m_drawer_icon_home_selected.png" alt="" class="logo">
-        <span class="title">购物车</span>
+    <div class="header" id="topbar">
+        <div class="left" tapmode="headerhover" onclick="goback()">
+            <img src="../image/icon_drawer_burger.png" alt="" class="logoleft"><img src="../image/m_drawer_icon_home_selected.png" alt="" class="logo">
+            <span class="title">确认订单</span>
+        </div>
+        
     </div>
 
-</div>
-
-<div class="content" id="content" style="padding-bottom:50px;overflow-x: hidden">
+    <div class="content" id="content" style="padding-bottom:50px;overflow-x: hidden">
 
 
 
-</div>
-<div class="bottom" style="z-index:999999;">
-    <img src="../image/cart.png" alt="">
-    <div style="color:white;display:inline-block;vertical-align: top; height:30px;margin-top:10px;"><span id="buynum" style="color:white">5</span>份 ￥<span id="totalcash" style="font-size:24px;color:red;">34</span></div>
-    <span tapmode="total-hover" class="pull-right btn-success" onclick="confirmOrder()">结算</span>
-</div>
+    </div>
+    <div class="bottom" style="z-index:999999;">
+        <img src="../image/cart.png" alt="">
+        <div style="color:white;display:inline-block;vertical-align: top; height:30px;margin-top:10px;"><span id="buynum" style="color:white">5</span>份 ￥<span id="totalcash" style="font-size:24px;color:red;">34</span></div>
+        <span tapmode="total-hover" class="pull-right btn-success" onclick="confirmOrder()">结算</span>
+    </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.js"></script>
@@ -112,65 +112,65 @@
 <script type="text/javascript" src="../template/shop.js"></script>
 <script type="text/javascript">
 
-    function goback () {
-        api.closeToWin({name:'root'});
-    }
+function goback () {
+    api.closeToWin({name:'root'});
+}
 
-    apiready = function(){
+apiready = function(){
 
-        var header = $api.byId('topbar');
-        $api.fixIos7Bar(header);
-        var order=$api.getStorage("cart");
-        console.log(JSON.stringify(order));
-        var temStr=doT.template(shopTemplate.cartTpl())(order);
-        $("#content").html(temStr);
+    var header = $api.byId('topbar');
+    $api.fixIos7Bar(header);
+    var order=api.pageParam.order;
+    console.log(JSON.stringify(order));
+    var temStr=doT.template(shopTemplate.confirmTpl())(order);
+    $("#content").html(temStr);
 
-        $("#totalcash").html(order.Total);
-        $("#buynum").html(order.Count);
-        confirmOrder=function()
+    $("#totalcash").html(order.Total);
+    $("#buynum").html(order.Count);
+    confirmOrder=function()
+    {
+        var address=$("#address").val();
+        if(address)
         {
-            var address=$("#address").val();
-            if(address)
+            var url=config.shop.confirmOrder;
+            var params={
+                order:JSON.stringify(order),
+                address:$("#address").val()
+            };
+            Quickos.api.post(url,params,function(ret)
             {
-                var url=config.shop.confirmOrder;
-                var params={
-                    order:JSON.stringify(order),
-                    address:$("#address").val()
-                };
-                Quickos.api.post(url,params,function(ret)
+                console.log(JSON.stringify(ret));
+                if(ret)
                 {
-                    console.log(JSON.stringify(ret));
-                    if(ret)
+                    if(ret.success)
                     {
-                        if(ret.success)
+                        api.toast({
+                            msg:ret.msg,
+                            duration:1000
+                        });
+                        setTimeout(function()
                         {
-                            api.toast({
-                                msg:ret.msg,
-                                duration:1000
-                            });
-                            setTimeout(function()
-                            {
-                                api.closeToWin({name:'root'});
-                            },1000)
-                        }
-                        else
-                        {
-                            api.toast({
-                                msg:ret.errorText,
-                                duration:1000
-                            });
-                        }
+                            api.closeToWin({name:'root'});
+                        },1000)
                     }
-                });
-            }
-            else
-            {
-                api.toast({
-                    msg:"请输入地址",
-                    duration:1000
-                });
-            }
+                    else
+                    {
+                        api.toast({
+                            msg:ret.errorText,
+                            duration:1000
+                        });
+                    }
+                }
+            });
+        }
+        else
+        {
+            api.toast({
+                msg:"请输入地址",
+                duration:1000
+            });
         }
     }
+}
 </script>
 </html>
