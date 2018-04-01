@@ -13,5 +13,12 @@ var config=
                 getShopMenus:_BASE_URL+"/dinner/index.php?r=site/GetMenu",//获取饭店的菜单
                 getShopInfo:_BASE_URL+"/dinner/index.php?r=site/GetShopInfo",//获取饭店信息
                 confirmOrder:_BASE_URL+"/dinner/index.php?r=site/ConfirmOrderAjax",//确认订单
+            },
+        order:
+            {
+                getOrderInfoById:_BASE_URL+"/dinner/index.php?r=site/MyOrderAjax",//通过id获取订单信息
+                cancelOrderById:_BASE_URL+"/dinner/index.php?r=site/CancelOrder",//取消订单
+                getMyOrderList:_BASE_URL+"/dinner/index.php?r=site/MyOrderListAjax",//我的订单列表
+
             }
     };

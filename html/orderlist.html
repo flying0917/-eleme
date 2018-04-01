@@ -5,6 +5,7 @@
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
     <link rel="stylesheet" type="text/css" href="../css/common.css" />
     <link rel="stylesheet" type="text/css" href="../css/idangerous.swiper.css">
 
@@ -37,20 +38,25 @@
     </style>
 </head>
 <body>
-    <div class="header" id="topbar">
-        <div class="left" tapmode="headerhover" onclick="goback()">
-            <img src="../image/icon_drawer_burger.png" alt="" class="logoleft"><img src="../image/m_drawer_icon_home_selected.png" alt="" class="logo">
-            <span class="title">饿单中心</span>
-        </div>
-        
-    </div>
+    <header class="aui-bar aui-bar-nav top-fixed">
+        <a class="aui-pull-left aui-btn">
+            <span class="aui-iconfont aui-icon-left" onclick="api.closeWin()"></span>
+        </a>
+        <div class="aui-title aui-text-white">我的订单</div>
+    </header>
 
-    <div class="content">
-        <img src="../image/m_errorpages_icon_order.png" alt="" class="centerbg">
-        <div class="info">还没有饿单，快去下单吧</div>
+    <div class="aui-content margin-t-header" id="list-content">
+
     </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript" src="../script/quickos.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/cart.js"></script>
+<script type="text/javascript" src="../template/shop.js"></script>
 <script type="text/javascript">
 
 function goback () {
@@ -60,7 +66,38 @@ function goback () {
 apiready = function(){
 
     var header = $api.byId('topbar');
-    $api.fixIos7Bar(header); 
+    $api.fixIos7Bar(header);
+    getList();
+
+    openOrderStatus=function(id)
+    {
+        var order_id=id;
+        api.openWin({
+            name:"orderStatus",
+            url:"./orderStatus.html",
+            pageParam:{
+                id:order_id
+            }
+        });
+    }
+    //获取饭店菜单列表
+    function getList()
+    {
+        var url=config.order.getMyOrderList;
+        Quickos.api.get(url,function(ret)
+        {
+            if(ret)
+            {
+                console.log(JSON.stringify(ret))
+                if(ret.success)
+                {
+                    var temStr=doT.template(shopTemplate.orderListTpl())(ret.data);
+
+                    $("#list-content").html(temStr);
+                }
+            }
+        });
+    }
 }
 </script>
 </html>

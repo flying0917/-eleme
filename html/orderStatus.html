@@ -5,27 +5,12 @@
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
     <link rel="stylesheet" type="text/css" href="../css/common.css" />
     <link rel="stylesheet" type="text/css" href="../css/idangerous.swiper.css">
 
 
     <style>
-        html,body{height:100%;background-color: #eee;}
-        .h10 {height: 10px;}
-
-        /* 头部导航样式 */
-        .header {position: relative;height: 50px;line-height: 50px;background-color: #3993cf;}
-        .header .left  {position: absolute;left: 0;height: 50px;}
-        .header .left  .logoleft {height: 20px;vertical-align: top; margin-top: 15px;}
-        .header .left  .logo {height: 46px; vertical-align: top; margin-top: 2px; margin-left: -10px;}
-        .header .left  .title {font-size: 20px; color: #fff; margin-left: -10px;padding-right: 10px;}
-
-
-        .header .right {position: absolute;right: 0;height: 50px;}
-        .header .right img {height: 20px;padding: 15px;}
-
-        .loginbg {width: 100%;}
-
         html,body{min-height:100%;background-color: #eee;}
         body {position: relative;}
         .h10 {height: 10px;}
@@ -84,25 +69,19 @@
     </style>
 </head>
 <body>
-    <div class="header" id="topbar">
-        <div class="left" tapmode="headerhover" onclick="goback()">
-            <img src="../image/icon_drawer_burger.png" alt="" class="logoleft"><img src="../image/m_drawer_icon_home_selected.png" alt="" class="logo">
-            <span class="title">确认订单</span>
-        </div>
-        
-    </div>
+<!--头-->
+    <header class="aui-bar aui-bar-nav top-fixed">
+        <a class="aui-pull-left aui-btn">
+            <span class="aui-iconfont aui-icon-left" onclick="api.closeWin()"></span>
+        </a>
+        <div class="aui-title aui-text-white">订单</div>
+    </header>
 
-    <div class="content" id="content" style="padding-bottom:50px;overflow-x: hidden">
+    <div class="aui-content margin-t-header" id="list-content">
 
-
-
-    </div>
-    <div class="bottom" style="z-index:999999;">
-        <img src="../image/cart.png" alt="">
-        <div style="color:white;display:inline-block;vertical-align: top; height:30px;margin-top:10px;"><span id="buynum" style="color:white">5</span>份 ￥<span id="totalcash" style="font-size:24px;color:red;">34</span></div>
-        <span tapmode="total-hover" class="pull-right btn-success" onclick="confirmOrder()">结算</span>
     </div>
 </body>
+<script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/doT.min.js"></script>
@@ -113,73 +92,76 @@
 <script type="text/javascript">
 
 function goback () {
-    api.closeWin();
+    api.closeWin({name:'orderlist'});
 }
 
 apiready = function(){
 
     var header = $api.byId('topbar');
     $api.fixIos7Bar(header);
-    var order=api.pageParam.order;
-    console.log(JSON.stringify(order));
-    var temStr=doT.template(shopTemplate.confirmTpl())(order);
-    $("#content").html(temStr);
+    getList();
 
-    $("#totalcash").html(order.Total);
-    $("#buynum").html(order.Count);
-    confirmOrder=function()
+    openShop=function(id)
     {
-        var address=$("#address").val();
-        if(address)
-        {
-            var url=config.shop.confirmOrder;
-            var params={
-                order:JSON.stringify(order),
-                address:$("#address").val()
-            };
-            Quickos.api.post(url,params,function(ret)
+        api.openWin(
             {
-                console.log(JSON.stringify(ret));
-                if(ret)
-                {
-                    if(ret.success)
+                name:"shopdetail",
+                url:"./shopdetail.html",
+                pageParm:
                     {
-                        api.toast({
-                            msg:ret.msg,
+                        id:id
+                    }
+            });
+    };
+    //取消订单
+    cancelOrder=function(that)
+    {
+        var $that=$(that);
+        var url=config.order.cancelOrderById+"&id="+api.pageParam.id;
+        Quickos.api.get(url,function(ret)
+        {
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    api.toast(
+                        {
+                            msg:ret.successText,
                             duration:1000
                         });
-                        var temCartObj=new CartHelper();
-                        temCartObj.clear(order.shop_id);
-                        setTimeout(function()
+                    $("#order-status-tip").text("用户取消订单");
+                    $that.remove();
+                }
+                else
+                {
+                    api.toast(
                         {
-                            api.openWin({
-                                name:"orderStatus",
-                                url:"./orderStatus.html",
-                                pageParam:
-                                    {
-                                        id:ret.data.order_id
-                                    }
-                            });
-                        },1000);
-                    }
-                    else
-                    {
-                        api.toast({
                             msg:ret.errorText,
                             duration:1000
                         });
-                    }
                 }
-            });
-        }
-        else
+            }
+        });
+    };
+    //获取饭店菜单列表
+    function getList()
+    {
+        var url=config.order.getOrderInfoById+"&order_id="+api.pageParam.id;
+        Quickos.api.get(url,function(ret)
         {
-            api.toast({
-                msg:"请输入地址",
-                duration:1000
-            });
-        }
+            if(ret)
+            {
+                console.log(JSON.stringify(ret))
+                if(ret.success)
+                {
+                   var temStr=doT.template(shopTemplate.orderStatusTpl())(ret.data);
+
+                    $("#list-content").html(temStr);
+                }
+            }
+        });
     }
+
 }
 </script>
 </html>

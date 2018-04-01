@@ -140,4 +140,97 @@ var shopTemplate=
              */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
             return tpl;
         },
+        //订单状态模板
+        orderStatusTpl:function()
+        {
+            var tpl= (function tpl() {/*
+            <section class="aui-content-padded">
+            <div class="aui-card-list">
+                <div class="aui-card-list-header aui-text-center" style="display:block;">
+                    <b id="order-status-tip">{{=it.status_text}}</b><br>
+                    <div class="aui-font-size-12 aui-text-left">送货地址：{{=it.address}}</div>
+                    <div class="aui-font-size-12 aui-text-left">下单时间：{{=it.create_order_date}} {{=it.create_time}}</div>
+                    <div class="aui-font-size-12 aui-text-left">订单编号：{{=it.order_number}}</div>
+                    {{if(it.status_text=="等待商家接单"){}}
+                    <div class="aui-text-right">
+                        <span class="aui-btn aui-btn-danger  aui-btn-sm" onclick="cancelOrder(this)">取消订单</span>
+                    </div>
+                    {{}}}
+                </div>
+                <div class="aui-card-list-content-padded">
+                    <ul class="aui-list aui-media-list">
+                        <li class="aui-list-item aui-list-item-middle" >
+                            <div class="aui-media-list-item-inner">
+                                <div class="aui-list-item-media">
+                                    <img src="../../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                                </div>
+                                <div class="aui-list-item-inner aui-list-item-arrow" onclick="openShop({{=it.shop_id}})">
+                                    <div class="aui-list-item-text">
+                                        <div class="aui-list-item-title aui-font-size-14">{{=it.shop_name}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="aui-card-list-footer" style="display:block;">
+                    {{for(var x in it.product_info){ }}
+                    <div class="item style2">
+                        <div class="itemshelf">
+                            <div class="shelfinfo01">{{=it.product_info[x].Name}}</div>
+
+                            <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;份数：{{=it.product_info[x].Count}}份</div>
+                        </div>
+
+                        <div class="buybtn"><p tapmode=""  >小计￥{{=it.product_info[x].total}}</p>
+
+                        </div>
+                    </div>
+                    {{ } }}
+                    <div class="item style2" style="height:30px;padding-right:10px;border-bottom:none;">
+                        <div class="aui-pull-right">
+                            <span>合计：</span>
+                            <span style="font-size:16px;color:red;">￥{{=it.total}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+             */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+            return tpl;
+        },
+
+        //订单列表模板
+        orderListTpl:function()
+        {
+            var tpl= (function tpl() {/*
+             <ul class="aui-list aui-media-list">
+             {{for(var x in it){}}
+                 <li class="aui-list-item aui-list-item-middle" onclick="openOrderStatus({{=it[x].id}})">
+                     <div class="aui-media-list-item-inner">
+                         <div class="aui-list-item-media" style="width: 3rem;">
+                             <img src="../../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                         </div>
+                         <div class="aui-list-item-inner aui-list-item-arrow">
+                             <div class="aui-list-item-text">
+                                 <div class="aui-list-item-title aui-font-size-16 aui-ellipsis-1" style="width:60%;font-size:16px;"><b>{{=it[x].shop_name}}</b></div>
+                                 <div class="aui-list-item-right aui-ellipsis-1">{{=it[x].status_text}}</div>
+                             </div>
+                             <div class="aui-list-item-text aui-ellipsis-1">
+                                 {{=it[x].create_order_date}} {{=it[x].create_time}}
+                             </div>
+                             <div class="aui-list-item-text">
+                                 {{=it[x].order_text}}
+                             </div>
+                             <div class="aui-list-item-text">
+                                 <span style="color:black;">￥{{=it[x].total}}</span>
+                             </div>
+                         </div>
+                     </div>
+                 </li>
+                 {{}}}
+             </ul>
+             */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+            return tpl;
+        },
     }

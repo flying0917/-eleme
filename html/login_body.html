@@ -149,7 +149,11 @@ function login()
             }
             else
             {
-                $("#err-tip").text(ret.msg);
+                api.toast(
+                    {
+                        msg:ret.msg,
+                        duration:1000
+                    });
             }
         }
     });
