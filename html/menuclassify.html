@@ -84,9 +84,8 @@
     </div>
     <input type="hidden" id="shopname">
 </body>
-
-<script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/doT.min.js"></script>
 <script type="text/javascript" src="../script/quickos.js"></script>
 <script type="text/javascript" src="../script/config.js"></script>
@@ -320,6 +319,19 @@ apiready=function()
 
                     $("#shopname").val(ret.data.shop.name);
                     $("#content").html(temStr);
+                    //init购物车的状态
+                    var cart=$api.getStorage("cart['"+api.pageParam.id+"']");
+                    if(cart)
+                    {
+                        var items=cart.Items;
+                        for(var x in items)
+                        {
+                            for(var y=0; y<parseInt(items[x].Count);y++)
+                            {
+                                $("#initClick"+items[x].Id).click();
+                            }
+                        }
+                    }
                 }
             }
         });

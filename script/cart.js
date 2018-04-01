@@ -87,6 +87,7 @@ var CartHelper = function () {
     //COOKIE操作
     this.Save = function (cart) {
     	$api.setStorage(this.cookieName+"['"+this.id+"']", cart);
+        this.addHasCartShop(this.id);
     };
     this.Read = function () {
         //读取COOKIE中的集合
@@ -103,6 +104,65 @@ var CartHelper = function () {
     	this.id=shop_id;
     	cart.shop_id = shop_id;
     	cart.shop_name = shop_name;
+
     	this.Save(cart);
     };
+    this.addHasCartShop=function(shop_id)
+    {
+        $api.getStorage("cart")?$api.getStorage("cart"):$api.setStorage("cart",[]);
+        var cartArr=$api.getStorage("cart");
+        for(var x in cartArr)
+        {
+            if(cartArr[x]===shop_id)
+            {
+                return false;
+            }
+        }
+        cartArr.push(shop_id);
+        $api.setStorage("cart",cartArr);
+    };
+
+    this.rmHasCartShop=function(shop_id)
+    {
+        $api.getStorage("cart")?$api.getStorage("cart"):$api.setStorage("cart",[]);
+        var cartArr=$api.getStorage("cart");
+        for(var x in cartArr)
+        {
+            if(cartArr[x]===shop_id)
+            {
+               cartArr.splice(x,1);
+            }
+        }
+        $api.setStorage("cart",cartArr);
+    };
+    this.clear=function(shop_id)
+    {
+        $api.rmStorage(this.cookieName+"['"+shop_id+"']");
+        this.rmHasCartShop(shop_id);
+    }
+    this.rm=function(shop_id,remove_id)
+    {
+        var temCart=$api.getStorage(this.cookieName+"['"+shop_id+"']");
+        var temItems=temCart.Items;
+        for(var x in temItems)
+        {
+            if(temItems[x].Id===remove_id)
+            {
+                temCart.Count=parseInt(temCart.Count)-parseInt(temItems[x].Count);
+                temCart.Total=parseFloat(temCart.Total)-parseFloat(temItems[x].Price)*parseInt(temItems[x].Count);
+                temItems.splice(x,1);
+            }
+        }
+
+        if(temItems.length)
+        {
+            temCart.Items=temItems;
+            console.log(JSON.stringify(temCart));
+            $api.setStorage(this.cookieName+"['"+shop_id+"']",temCart);
+        }
+        else
+        {
+            this.clear(shop_id);
+        }
+    }
 }; 

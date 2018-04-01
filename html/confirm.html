@@ -103,8 +103,8 @@
         <span tapmode="total-hover" class="pull-right btn-success" onclick="confirmOrder()">结算</span>
     </div>
 </body>
-<script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/doT.min.js"></script>
 <script type="text/javascript" src="../script/quickos.js"></script>
 <script type="text/javascript" src="../script/config.js"></script>
@@ -113,7 +113,7 @@
 <script type="text/javascript">
 
 function goback () {
-    api.closeToWin({name:'root'});
+    api.closeWin();
 }
 
 apiready = function(){
@@ -148,10 +148,12 @@ apiready = function(){
                             msg:ret.msg,
                             duration:1000
                         });
+                        var temCartObj=new CartHelper();
+                        temCartObj.clear(order.shop_id);
                         setTimeout(function()
                         {
-                            api.closeToWin({name:'root'});
-                        },1000)
+                            api.closeWin();
+                        },1000);
                     }
                     else
                     {
