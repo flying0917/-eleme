@@ -6,7 +6,7 @@ var shopTemplate=
             var tpl= (function tpl() {/*
                  {{for(var x in it.shops){ }}
                   <div class="item style2" tapmode="itemhover" onclick="openShopDetail(this)" data-id="{{=it.shops[x].id}}" data-name="{{=it.shops[x].name}}" data-isontime="{{=it.isOnTime}}">
-                      <div class="itemlogo userlogo">{{?it.shops[x].logo}} {{=it[x].logo}} {{??}}<img src="../image/shopcover/jiujiuya.jpeg" alt="">{{?}}</div>
+                      <div class="itemlogo userlogo">{{?it.shops[x].logo}} <img src="{{=it.shops[x].logo}}"> {{??}}<img src="../image/shopcover/jiujiuya.jpeg" alt="">{{?}}</div>
                       <div class="itemshelf">
                           <div class="shelfinfo01">{{=it.shops[x].name}}<span class="fu">付</span><span class="pei">配</span></div>
                           <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">（2）</div>
@@ -162,7 +162,7 @@ var shopTemplate=
                         <li class="aui-list-item aui-list-item-middle" >
                             <div class="aui-media-list-item-inner">
                                 <div class="aui-list-item-media">
-                                    <img src="../../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                                    <img src="{{=it.shop_logo}}" class="aui-img-round aui-list-img-sm">
                                 </div>
                                 <div class="aui-list-item-inner aui-list-item-arrow" onclick="openShop({{=it.shop_id}})">
                                     <div class="aui-list-item-text">
@@ -209,7 +209,7 @@ var shopTemplate=
                  <li class="aui-list-item aui-list-item-middle" onclick="openOrderStatus({{=it[x].id}})">
                      <div class="aui-media-list-item-inner">
                          <div class="aui-list-item-media" style="width: 3rem;">
-                             <img src="../../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                             <img src="{{=it[x].shop_logo}}" class="aui-img-round aui-list-img-sm">
                          </div>
                          <div class="aui-list-item-inner aui-list-item-arrow">
                              <div class="aui-list-item-text">

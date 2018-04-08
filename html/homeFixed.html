@@ -108,7 +108,7 @@
         api.addEventListener({
             name: 'init-homefixed'
         }, function(ret, err) {
-            init();
+            location.reload();
         });
         init();
         //初始化
@@ -139,6 +139,14 @@
                                 $("#avatar").html('<img src="'+ret.data.member.avatar+'" alt="">');
                             }
                         }
+                        else
+						{
+						    api.toast(
+						        {
+									msg:ret.errorText,
+									duration:1000
+								});
+						}
                     }
                 });
             }

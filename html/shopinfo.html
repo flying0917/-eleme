@@ -5,6 +5,7 @@
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
     <link rel="stylesheet" type="text/css" href="../css/common.css" />
     <link rel="stylesheet" type="text/css" href="../css/idangerous.swiper.css">
 
@@ -57,6 +58,40 @@
 <body id="content">
 
 </body>
+<script type="text/template" id="message-tpl">
+    <section class="aui-chat">
+        {{for(var x in it){ }}
+        <div class="aui-chat-header">{{=it[x].create_time}}</div>
+        <div class="aui-chat-item aui-chat-left">
+            <div class="aui-chat-media">
+                <img src="../../image/demo2.png" />
+            </div>
+            <div class="aui-chat-inner">
+                <div class="aui-chat-name">{{=it[x].user_name}} </div>
+                <div class="aui-chat-content">
+                    <div class="aui-chat-arrow"></div>
+                    {{=it[x].content}}
+                </div>
+            </div>
+        </div>
+        {{for(var y in it[x].replys){}}
+        <div class="aui-chat-header">{{=it[x].replys[y].create_time}}</div>
+        <div class="aui-chat-item aui-chat-left">
+            <div class="aui-chat-media">
+                <img src="../../image/demo2.png" />
+            </div>
+            <div class="aui-chat-inner">
+                <div class="aui-chat-name">{{=it[x].replys[y].user_name}} </div>
+                <div class="aui-chat-content">
+                    <div class="aui-chat-arrow"></div>
+                    {{=it[x].replys[y].content}}
+                </div>
+            </div>
+        </div>
+        {{ } }}
+        {{ } }}
+    </section>
+</script>
 <script type="text/template" id="content-tpl">
     <div class="item isoarea">
         <div class="itemlogo userlogo">

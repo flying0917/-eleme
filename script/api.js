@@ -459,6 +459,27 @@
         );
     };
 
+    //是否滑动到底部
+    u.isScrollDown=function(obj,cb)
+    {
+        var callback=cb;
+        // 上拉加载更多
+        if($)
+        {
+            $(obj).on("scroll",function()
+            {
+                var scrollTop = $(this).scrollTop();
+                var height = $(this).height();
+                var scrollHeight = $(this)[0].scrollHeight;
+                // 是否滑到底部
+                if (scrollTop >= scrollHeight - height) {
+                    callback(true);
+                }
+                callback(false);
+            });
+        }
+    };
+
 /*end*/  
     
 

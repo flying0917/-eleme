@@ -15,9 +15,35 @@
         var that = this;
         params.data.values = $.extend({},params.data.values,{fromApp:true});
         api.ajax(params, function (ret, err) {
-
             console.log(params.url);
-            console.log(JSON.stringify(ret));
+            console.log(JSON.stringify(ret))
+            console.log(JSON.stringify(ret.body));
+
+
+            if(ret)
+            {
+                if(ret.body)
+                {
+                    if(ret.body)
+                    {
+
+                        if(ret.body.isGuest)
+                        {
+                            //设置未登录状态
+                            console.log("-----------------"+params.url)
+                            console.log("login change false");
+                            $api.setStorage("isLogin",0);
+                        }
+                        else
+                        {
+                            //设置登录状态
+                            console.log("-----------------"+params.url)
+                            console.log("login change true");
+                            $api.setStorage("isLogin",1);
+                        }
+                    }
+                }
+            }
 
             if ('' != err && undefined != err) {
                 if ( errdebug ) {
@@ -27,12 +53,12 @@
                         "\nERR: " + JSON.stringify(err));
                 }
                 else {
-                   /* alert(JSON.stringify(err))*/
+                  /* /!* alert(JSON.stringify(err))*!/
                     api.toast({
                         msg: '网络错误，请稍后重试',
                         duration: 10000,
                         location: 'bottom'
-                    });
+                    });*/
                 }
                 return false;
             }

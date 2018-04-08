@@ -74,7 +74,7 @@
 
         <div class="useritem">
             <div class="shelf01" tapmode="itemhover">账户信息</div>
-            <div class="shelf02" tapmode="itemhover">我的红包</div>
+            <div class="shelf02" tapmode="itemhover" onclick="logout()">退出登录</div>
         </div>
     </div>
 </body>
@@ -130,9 +130,33 @@ apiready = function(){
         getUserinfo();
     }
 
+    //退出登录
+    logout=function()
+    {
+        var url=config.user.logout;
+        console.log(url)
+        Quickos.api.get(url,function(ret)
+        {
+            console.log("--------------"+JSON.stringify(ret))
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    //存储用户信息
+                    $api.rmStorage("member");
+                    $api.setStorage("isLogin",0);
+                    location.reload();
+                    api.sendEvent({
+                        name: 'init-homefixed',
+                        extra: {}
+                    });
+                }
+            }
+        });
+    };
     function getUserinfo()
     {
-        if($api.getStorage("isLogin"))
+        if($api.getStorage("isLogin")&&$api.getStorage("isLogin")>0)
         {
             $("#login-content").addClass("hidden");
             $("#user-content").removeClass("hidden");

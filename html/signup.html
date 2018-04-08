@@ -84,6 +84,8 @@
 	<div class="divider"></div>
 	<form action="">
 		<div class="item email"><input type="text" placeholder="用户名" id="name"></div>
+		<div class="item passwd"><input type="text" placeholder="手机号" id="mobile">
+		</div>
 		<div class="item passwd"><input type="password" placeholder="密码" id="passwd">
 		</div>
 		<div class="item passwd"><input type="password" placeholder="确认密码" id="repasswd">
@@ -125,8 +127,9 @@ function goback () {
 	    var name=$("#name").val();
 	    var password=$("#passwd").val();
 	    var repassword=$("#repasswd").val();
+	    var mobile=$("#mobile").val();
 		var url=config.user.signup;
-	    Quickos.api.post(url,{name:name,password1:password,password2:repassword},function(ret)
+	    Quickos.api.post(url,{name:name,password1:password,password2:repassword,mobile:mobile},function(ret)
 		{
 		    if(ret)
 			{

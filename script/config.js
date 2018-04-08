@@ -6,6 +6,7 @@ var config=
                 signup:_BASE_URL+"/dinner/index.php?r=site/doregister",//注册
                 login:_BASE_URL+"/dinner/index.php?r=site/dologin",//登录
                 getUserInfo:_BASE_URL+"/dinner/index.php?r=site/GetUserInfo",//获取用户数据
+                logout:_BASE_URL+"/dinner/index.php?r=site/logoutAjax",//退出登录
             },
         shop:
             {

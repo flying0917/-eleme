@@ -68,7 +68,8 @@ apiready = function(){
     var header = $api.byId('topbar');
     $api.fixIos7Bar(header);
     getList();
-
+    var page=1;
+    var canGet=true;
     openOrderStatus=function(id)
     {
         var order_id=id;
@@ -80,20 +81,38 @@ apiready = function(){
             }
         });
     }
+
+    $api.isScrollDown("body",function(ret)
+    {
+        if(ret&&canGet)
+        {
+            canGet=false;
+            getList();
+        }
+    });
     //获取饭店菜单列表
     function getList()
     {
-        var url=config.order.getMyOrderList;
+        var url=config.order.getMyOrderList+"";
         Quickos.api.get(url,function(ret)
         {
             if(ret)
             {
-                console.log(JSON.stringify(ret))
                 if(ret.success)
                 {
                     var temStr=doT.template(shopTemplate.orderListTpl())(ret.data);
 
                     $("#list-content").html(temStr);
+                    page++;
+                    canGet=true;
+                }
+                else
+                {
+                    api.toast(
+                        {
+                            msg:ret.errorText,
+                            duration:1000
+                        });
                 }
             }
         });
