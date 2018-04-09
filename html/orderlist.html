@@ -12,6 +12,16 @@
 
     <style>
         html,body{height:100%;background-color: #eee;}
+        body
+        {
+            overflow-y:auto;
+        }
+        .aui-content
+        {
+            height:100%;
+            overflow-y:auto;
+            box-sizing: border-box;
+        }
         .h10 {height: 10px;}
 
         /* 头部导航样式 */
@@ -58,7 +68,6 @@
 <script type="text/javascript" src="../script/cart.js"></script>
 <script type="text/javascript" src="../template/shop.js"></script>
 <script type="text/javascript">
-
 function goback () {
     api.closeWin({name:'orderlist'});
 }
@@ -81,19 +90,20 @@ apiready = function(){
             }
         });
     }
-
-    $api.isScrollDown("body",function(ret)
+    //分页
+    $api.isScrollDown("#list-content",function(ret)
     {
         if(ret&&canGet)
         {
             canGet=false;
             getList();
+            return false;
         }
     });
     //获取饭店菜单列表
     function getList()
     {
-        var url=config.order.getMyOrderList+"";
+        var url=config.order.getMyOrderList+"&page="+page;
         Quickos.api.get(url,function(ret)
         {
             if(ret)
@@ -102,9 +112,12 @@ apiready = function(){
                 {
                     var temStr=doT.template(shopTemplate.orderListTpl())(ret.data);
 
-                    $("#list-content").html(temStr);
+                    $("#list-content").append(temStr);
                     page++;
-                    canGet=true;
+                    if(ret.data.length)
+                    {
+                        canGet=true;
+                    }
                 }
                 else
                 {
