@@ -15,7 +15,7 @@ var config=
                 getShopInfo:_BASE_URL+"/dinner/index.php?r=site/GetShopInfo",//获取饭店信息
                 confirmOrder:_BASE_URL+"/dinner/index.php?r=site/ConfirmOrderAjax",//确认订单
                 getMessage:_BASE_URL+"/dinner/index.php?r=site/GetMessageAjax",//确认订单
-                sendMessage:_BASE_URL+"/dinner/index.php?r=site/submitmessage",//确认订单
+                sendMessage:_BASE_URL+"/dinner/index.php?r=site/submitMessageForApp",//确认订单
             },
         order:
             {
