@@ -23,6 +23,7 @@ var config=
                 getOrderInfoById:_BASE_URL+"/dinner/index.php?r=site/MyOrderAjax",//通过id获取订单信息
                 cancelOrderById:_BASE_URL+"/dinner/index.php?r=site/CancelOrder",//取消订单
                 getMyOrderList:_BASE_URL+"/dinner/index.php?r=site/MyOrderListAjax",//我的订单列表
+                finishOrder:_BASE_URL+"/dinner/index.php?r=site/finishOrder",//我的订单列表
 
             }
     };

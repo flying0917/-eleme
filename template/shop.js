@@ -155,6 +155,10 @@ var shopTemplate=
                     <div class="aui-text-right">
                         <span class="aui-btn aui-btn-danger  aui-btn-sm" onclick="cancelOrder(this)">取消订单</span>
                     </div>
+                    {{}else if(it.status_text=="商家已接单，请等待配送"){ }}
+                    <div class="aui-text-right">
+                        <span class="aui-btn aui-btn-finish  aui-btn-sm" onclick="finishOrder(this)">确认订单</span>
+                    </div>
                     {{}}}
                 </div>
                 <div class="aui-card-list-content-padded">

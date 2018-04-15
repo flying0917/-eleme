@@ -144,6 +144,36 @@ apiready = function(){
             }
         });
     };
+    //完成订单
+    finishOrder=function(that)
+    {
+        var $that=$(that);
+        var url=config.order.finishOrder+"&id="+api.pageParam.id;
+        Quickos.api.get(url,function(ret)
+        {
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    api.toast(
+                        {
+                            msg:ret.successText,
+                            duration:1000
+                        });
+                    $("#order-status-tip").text("订单已完成");
+                    $that.remove();
+                }
+                else
+                {
+                    api.toast(
+                        {
+                            msg:ret.errorText,
+                            duration:1000
+                        });
+                }
+            }
+        });
+    };
     //获取饭店菜单列表
     function getList()
     {
