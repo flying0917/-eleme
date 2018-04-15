@@ -264,4 +264,3 @@ var shopTemplate=
             return tpl;
         },
     }
-    }
