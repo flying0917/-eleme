@@ -233,4 +233,35 @@ var shopTemplate=
              */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
             return tpl;
         },
+        //商家订单列表模板
+        shopOrderlist:function()
+        {
+            var tpl= (function tpl() {/*
+             <ul class="aui-list aui-media-list">
+             {{for(var x in it){}}
+                 <li class="aui-list-item aui-list-item-middle" onclick="openOrderStatus({{=it[x].id}})">
+                     <div class="aui-media-list-item-inner">
+                         <div class="aui-list-item-inner aui-list-item-arrow">
+                             <div class="aui-list-item-text">
+                                 <div class="aui-list-item-title aui-font-size-16 aui-ellipsis-1" style="width:60%;font-size:16px;"><b>{{=it[x].user_name}}</b></div>
+                                 <div class="aui-list-item-right aui-ellipsis-1">{{=it[x].status_text}}</div>
+                             </div>
+                             <div class="aui-list-item-text aui-ellipsis-1">
+                                {{=it[x].create_time}}
+                             </div>
+                             <div class="aui-list-item-text">
+                                 {{=it[x].order_text}}
+                             </div>
+                             <div class="aui-list-item-text">
+                                 <span style="color:black;">￥{{=it[x].total_price}}</span>
+                             </div>
+                         </div>
+                     </div>
+                 </li>
+                 {{}}}
+             </ul>
+             */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+            return tpl;
+        },
+    }
     }

@@ -16,6 +16,7 @@ var config=
                 confirmOrder:_BASE_URL+"/dinner/index.php?r=site/ConfirmOrderAjax",//确认订单
                 getMessage:_BASE_URL+"/dinner/index.php?r=site/GetMessageAjax",//确认订单
                 sendMessage:_BASE_URL+"/dinner/index.php?r=site/submitMessageForApp",//确认订单
+                shopOrderlist:_BASE_URL+"/dinner/index.php?r=site/FoodorderAjax",//确认我的订单
             },
         order:
             {
