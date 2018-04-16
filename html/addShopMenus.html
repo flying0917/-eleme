@@ -73,84 +73,32 @@
         <a class="aui-pull-left aui-btn">
             <span class="aui-iconfont aui-icon-left" onclick="api.closeWin()"></span>
         </a>
-        <div class="aui-title aui-text-white">我的菜单</div>
-        <a class="aui-pull-right aui-btn aui-btn-outlined">
-            <span class="aui-iconfont aui-icon-plus" onclick="addMenus()"></span>
-        </a>
+        <div class="aui-title aui-text-white">添加菜单</div>
     </header>
-    <div class="darktitle"></div>
-    <div id="content" class="">
-
+    <div class="aui-content ">
+        <ul class="aui-list aui-form-list margin-t-header">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        菜名：
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="Name">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        价格：
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="Name">
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
-
-    <div class="h50"></div>
-    <div class="bottom" style="z-index:999999;">
-        <img src="../image/cart.png" alt="">
-        <span class="buyinfo" id="buyinfo"><span id="buynum">1</span>份 ￥<span id="totalcash">10</span></span>
-        <span id="minbuy">￥0元起送</span>
-
-        <span  id="cartbtn" tapmode="total-hover" class="pull-right btn-primary" onclick="onAddCart()">加入购物车</span>
-        <span id="buyit" tapmode="total-hover" class="pull-right btn-success" onclick="confirmOrder()">去结算</span>
-    </div>
-    <input type="hidden" id="shopname">
 </body>
-<script type="text/javascript" src="../script/zepto.js"></script>
-<script type="text/javascript" src="../script/api.js"></script>
-<script type="text/javascript" src="../script/doT.min.js"></script>
-<script type="text/javascript" src="../script/quickos.js"></script>
-<script type="text/javascript" src="../script/config.js"></script>
-<script type="text/javascript" src="../script/cart.js"></script>
-<script type="text/javascript" src="../template/shop.js"></script>
-<script type="text/javascript">
-function goback () {
-    api.closeWin({name:'myshopmenus'});
-}
 
-
-function openNewWin() {
-    api.openWin ({
-        name: 'login',
-        url: './'+'login'+'.html',
-        rect:{
-            x:0,
-            y:0,
-            w:'auto',
-            h:'auto'
-        },
-        bounces: false
-    });
-}
-
-
-apiready=function()
-{
-    init();
-    function init()
-    {
-        getMenuList();
-    }
-
-    //获取饭店菜单列表
-    function getMenuList()
-    {
-        var url=config.shop.shopMenus+"&shop_id="+api.pageParam.id;
-        Quickos.api.get(url,function(ret)
-        {
-            //alert(JSON.stringify(ret));
-            if(ret)
-            {
-                
-                
-                    var temStr=doT.template(shopTemplate.shopMenus())(ret.data);
-
-                    // $("#shopname").val(ret.data.shop.name);
-                    $("#content").html(temStr);
-                
-                
-                
-            }
-        });
-    }
-}
-</script>
 </html>
