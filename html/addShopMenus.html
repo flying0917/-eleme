@@ -114,7 +114,7 @@
                        简介：
                     </div>
                     <div class="aui-list-item-input">
-                        <div type="textarea" placeholder="请输入菜名简介"></div>
+                        <input type="textarea" placeholder="请输入菜名简介"></input>
                     </div>
                 </div>
             </li>
@@ -138,6 +138,7 @@ apiready=function()
         {
             // $("#login-content").addClass("hidden");
             // $("#user-content").removeClass("hidden");
+            alert(1)
             var url=config.shop.addShopMenus;
             Quickos.api.get(url,function(ret)
             {
@@ -146,7 +147,7 @@ apiready=function()
                 {
                     if(ret.success)
                     {
-                        alert(1)
+                        alert(2)
                         //存储菜单信息
                         $api.setStorage("Menus",ret.data.Menus);
                         //绑定菜单名字
@@ -161,11 +162,7 @@ apiready=function()
                 }
             });
         }
-        else
-        {
-            $("#user-content").addClass("hidden");
-            $("#login-content").removeClass("hidden");
-        }
+        
     }
 }
 </script>
