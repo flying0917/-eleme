@@ -75,7 +75,7 @@
         </a>
         <div class="aui-title aui-text-white">添加菜单</div>
     </header>
-    <div class="aui-content ">
+    <div class="aui-content aui-margin-b-15">
         <ul class="aui-list aui-form-list margin-t-header">
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
@@ -83,7 +83,7 @@
                         菜名：
                     </div>
                     <div class="aui-list-item-input">
-                        <input type="text" placeholder="Name">
+                        <input type="text" id="menusName" placeholder="请输入添加的菜名">
                     </div>
                 </div>
             </li>
@@ -93,12 +93,70 @@
                         价格：
                     </div>
                     <div class="aui-list-item-input">
-                        <input type="text" placeholder="Name">
+                        <input type="text" id="menusPrice" placeholder="请输入菜名价格">
+                    </div>
+                    <div class="aui-list-item-right">
+                        <div class="" style="position:relative;width:30px;">元/份</div>
                     </div>
                 </div>
             </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        菜品图片：
+                    </div>
+                    <div type="file"></div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                       简介：
+                    </div>
+                    <div class="aui-list-item-input">
+                        <div type="textarea" placeholder="请输入菜名简介"></div>
+                    </div>
+                </div>
+            </li>
+
         </ul>
+        <p><div class="aui-btn aui-btn-primary aui-btn-block" onclick="getMenusinfo()" style="width: 90%;margin: 0 auto;">提交</div></p>
     </div>
 </body>
+<script type="text/javascript">
+    function getMenusinfo()
+    {
+        if($api.getStorage("addShopMenus")&&$api.getStorage("addShopMenus")>0)
+        {
+            // $("#login-content").addClass("hidden");
+            // $("#user-content").removeClass("hidden");
+            var url=config.shop.addShopMenus;
+            Quickos.api.get(url,function(ret)
+            {
 
+                if(ret)
+                {
+                    if(ret.success)
+                    {
+                        //存储菜单信息
+                        $api.setStorage("Menus",ret.data.Menus);
+                        //绑定菜单名字
+                        $("#menusName").text(ret.data.Menus.name);
+                        //绑定菜单价格
+                        var menusPrice=ret.data.Menus.price;
+                        $("#menusPrice").text(menusPrice);
+                        //绑定简介内容
+                        var menusBrief=ret.data.Menus.brief;
+                        $("#menusBrief").text(menusBrief);
+                    }
+                }
+            });
+        }
+        else
+        {
+            $("#user-content").addClass("hidden");
+            $("#login-content").removeClass("hidden");
+        }
+    }
+</script>
 </html>
