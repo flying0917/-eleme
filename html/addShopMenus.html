@@ -124,6 +124,14 @@
     </div>
 </body>
 <script type="text/javascript">
+apiready=function()
+{
+    init();
+    function init()
+    {
+        getMenusinfo();
+    }
+
     function getMenusinfo()
     {
         if($api.getStorage("addShopMenus")&&$api.getStorage("addShopMenus")>0)
@@ -138,6 +146,7 @@
                 {
                     if(ret.success)
                     {
+                        alert(1)
                         //存储菜单信息
                         $api.setStorage("Menus",ret.data.Menus);
                         //绑定菜单名字
@@ -158,5 +167,6 @@
             $("#login-content").removeClass("hidden");
         }
     }
+}
 </script>
 </html>
