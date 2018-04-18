@@ -79,7 +79,25 @@
         </a>
     </header>
     <div id="content" class="margin-t-header">
+        <div class="item style2" data-id="{{=it[x].id}}" data-price="{{=it[x].price}}" data-name="{{=it[x].name}}" data-count="0">
+            <div class="itemshelf">
+                <div class="shelfinfo01">{{=it[x].name}}</div>
+                <div class="shelfinfo03">{{=it[x].brief}}</div>
+                <div class="shelfinfo02 staring">
+                    <div class="buybtn"><p tapmode="" onclick="buyfood(this,{{=x}})" data-price="{{=it[x].price}}" id="initClick{{=it[x].id}}">￥{{=it[x].price}}</p>
+                        <span class="minusorder">
+                                      <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
+                                      <span class="minus" tapmode="" data-price="{{=it[x].price}}" onclick="minuscash(this,{{=x}})">－</span>
+                                  </span>
+                    </div>
+                </div>
+            </div>
+            <div class="aui-clearfix aui-padded-5">
+                <div class="aui-btn aui-btn-sm aui-btn-danger aui-pull-right" style="margin:5px;">删除</div>
+                <div class="aui-btn aui-btn-sm aui-btn-success aui-pull-right" style="margin:5px;">上架</div>
+            </div>
 
+        </div>
     </div>
 
     <div class="h50"></div>
@@ -127,6 +145,7 @@ function addMenus() {
     });
 }
 
+
 apiready=function()
 {
     //监听事件
@@ -139,17 +158,68 @@ apiready=function()
         getMenuList();
     }
 
+    //上下架菜单
+    up=function(that,id)
+    {
+        $that=$(that);
+        var url=config.shop.upMenus+"&id="+id;
+        Quickos.api.get(url,function(ret)
+        {
+            if(ret)
+            {
+                if(ret.success)
+                {
+                   $that.css("background-color",ret.status_color).text(ret.status_text);
+                }
+                else
+                {
+                    api.toast({
+                        msg:ret.errorText,
+                        duration:1000
+                    });
+                }
+            }
+        });
+    }
+    //删除菜单
+    deleteItem=function(id)
+    {
+        var url=config.shop.deleteMenus+"&id="+id;
+        Quickos.api.get(url,function(ret)
+        {
+            console.log(JSON.stringify(ret));
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    api.toast({
+                        msg:ret.msg,
+                        duration:1000
+                    });
+                    setTimeout(function()
+                    {
+                        location.reload();
+                    },1000)
+                }
+                else
+                {
+                    api.toast({
+                        msg:ret.errorText,
+                        duration:1000
+                    });
+                }
+            }
+        });
+    }
     //获取饭店菜单列表
     function getMenuList()
     {
         var url=config.shop.shopMenus+"&shop_id="+api.pageParam.id;
         Quickos.api.get(url,function(ret)
         {
-            //alert(JSON.stringify(ret));
+            console.log(JSON.stringify(ret));
             if(ret)
             {
-                
-                
                     var temStr=doT.template(shopTemplate.shopMenus())(ret.data);
 
                     // $("#shopname").val(ret.data.shop.name);
@@ -160,6 +230,7 @@ apiready=function()
             }
         });
     }
+
 }
 </script>
 </html>

@@ -102,13 +102,11 @@ apiready = function(){
     //获取饭店菜单列表
     function getList()
     {
-        alert(1)
         var url=config.shop.shopOrderlist+"&page="+page;
  
         Quickos.api.get(url,function(ret)
         {   
 
-            alert(JSON.stringify(ret));
             if(ret)
             {
                 if(ret.success)

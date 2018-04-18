@@ -283,20 +283,19 @@ var shopTemplate=
                                       <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
                                       <span class="minus" tapmode="" data-price="{{=it[x].price}}" onclick="minuscash(this,{{=x}})">－</span>
                                   </span>
-                              </div>月售2份
+                              </div>
                             </div>
                       </div>
-                      <div class="buybtn"><p tapmode="" onclick="buyfood(this,{{=x}})" data-price="{{=it[x].price}}" id="initClick{{=it[x].id}}">￥{{=it[x].price}}</p>
-                          <span class="minusorder">
-                              <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
-                              <span class="minus" tapmode=""  onclick="minuscash(this,{{=x}})">－删除</span>
-                          </span>
+                      <div class="aui-clearfix aui-padded-5">
+                          <div class="aui-btn aui-btn-sm aui-btn-danger aui-pull-right" style="margin:5px;" onclick="deleteItem({{=it[x].id}})">删除</div>
+                          <div class="aui-btn aui-btn-sm aui-btn-success aui-pull-right" style="margin:5px;"  onclick="up(this,{{=it[x].id}})">{{?it[x].status==="1"}}待上架{{??it[x].status==="2"}}已上架{{??it[x].status==="3"}}已下架{{?}}</div>
                       </div>
+
                   </div>
                   {{ } }}
                  {{ }else{ }}
                      <img src="../image/m_errorpages_icon_order.png" alt="" style="width:180px;margin-top:150px;" class="centerbg">
-                     <div class="info" style=""color: #888;margin-top: 30px;>没有找到餐厅</div>
+                     <div class="info" style=""color: #888;margin-top: 30px;>没有找到菜单</div>
                  {{ } }}
              */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
             return tpl;

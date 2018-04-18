@@ -44,54 +44,49 @@
 		</div>
 	</div>
 
-	<div class="item" tapmode="itemhover" onclick="closeSlide()">
+	<div class="item member" tapmode="itemhover" onclick="closeSlide()">
 		<div class="itemlogo"><img src="../image/menu_icon_home.png" alt=""></div>
 		<div class="itemshelf">
 			<div class="shelfinfo01">我要订餐</div>
 			
 		</div>
 	</div>
-	<div class="item" tapmode="itemhover" onclick="openNewWin('orderlist')">
+	<div class="item item-notlogin member" tapmode="itemhover" onclick="openNewWin('orderlist')">
 		<div class="itemlogo"><img src="../image/menu_icon_order_list.png" alt=""></div>
 		<div class="itemshelf">
 			<div class="shelfinfo01">饿单中心</div>
 			
 		</div>
 	</div>
-	<div class="item" tapmode="itemhover" onclick="openNewWin('shoplist')">
+	<div class="item item-notlogin shop" tapmode="itemhover" onclick="openNewWin('shoplist')">
 		<div class="itemlogo"><img src="../image/menu_icon_order_list.png" alt=""></div>
 		<div class="itemshelf">
 			<div class="shelfinfo01">商家订单</div>
 			
 		</div>
 	</div>
-	<div class="item" tapmode="itemhover" onclick="openNewWin('myshopmenus')">
+	<div class="item item-notlogin shop" tapmode="itemhover" onclick="openNewWin('myshopmenus')">
 		<div class="itemlogo"><img src="../image/menu_icon_order_list.png" alt=""></div>
 		<div class="itemshelf">
 			<div class="shelfinfo01">我的菜单</div>
 			
 		</div>
 	</div>
-	<div class="item" tapmode="itemhover" onclick="openNewWin('shoplist')">
+	<div class="item item-notlogin shop" tapmode="itemhover" onclick="openNewWin('shoplist')">
 		<div class="itemlogo"><img src="../image/menu_icon_order_list.png" alt=""></div>
 		<div class="itemshelf">
-			<div class="shelfinfo01">asd</div>
+			<div class="shelfinfo01">留言管理</div>
 			
 		</div>
 	</div>
-	<div class="item" tapmode="itemhover" onclick="openNewWin('buycart')">
+	<div class="item item-notlogin member" tapmode="itemhover" onclick="openNewWin('buycart')">
 		<div class="itemlogo"><img src="../image/menu_icon_order_list.png" alt=""></div>
 		<div class="itemshelf">
 			<div class="shelfinfo01">购物车</div>
 
 		</div>
 	</div>
-	<div class="item" tapmode="itemhover" onclick="openNewWin('aboutus')">
-		<div class="itemlogo"><img src="../image/menu_icon_about.png" alt=""></div>
-		<div class="itemshelf">
-			<div class="shelfinfo01">关于我们</div>
-		</div>
-	</div>
+
 
 </body>
 <script type="text/javascript" src="../script/zepto.js"></script>
@@ -146,6 +141,7 @@
                 var url=config.user.getUserInfo;
                 Quickos.api.get(url,function(ret)
                 {
+                    console.log(JSON.stringify(ret))
                     if(ret)
                     {
                         if(ret.success)
@@ -154,6 +150,15 @@
                             $api.setStorage("member",ret.data.member);
                             //绑定用户名信息
                             $("#username").text(ret.data.member.name);
+                            //权限控制
+							if(ret.data.member.roleid==='1')
+							{
+							    $(".member").hide();
+							}
+							else if(ret.data.member.roleid==='0')
+							{
+                                $(".shop").hide();
+							}
                             //绑定头像信息
                             if(ret.data.member.avatar)
                             {
@@ -162,6 +167,7 @@
                         }
                         else
 						{
+						    $(".item-notlogin").hide();
 						    api.toast(
 						        {
 									msg:ret.errorText,

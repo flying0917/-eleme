@@ -19,6 +19,8 @@ var config=
                 shopOrderlist:_BASE_URL+"/dinner/index.php?r=site/FoodorderAjax",//确认我的订单
                 shopMenus:_BASE_URL+"/dinner/index.php?r=site/menusAjax",//我的菜单
                 addShopMenus:_BASE_URL+"/dinner/index.php?r=menus/createAjax",//增加菜单
+                deleteMenus:_BASE_URL+"/dinner/index.php?r=menus/deleteAjax",//删除菜单
+                upMenus:_BASE_URL+"/dinner/index.php?r=menus/audit",//上架菜单
             },
         order:
             {
