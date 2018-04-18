@@ -480,6 +480,21 @@
         }
     };
 
+    //处理提交的form数据 转成json格式
+    u.handleFormData=function(data)
+    {
+        var postData={};
+        for (var x in data)
+        {
+            postData[data[x].name]=data[x].value;
+        }
+        return postData;
+    };
+
+    
+
+
+
 /*end*/  
     
 

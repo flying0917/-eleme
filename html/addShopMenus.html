@@ -71,85 +71,139 @@
 <body>
     <header class="aui-bar aui-bar-nav top-fixed">
         <a class="aui-pull-left aui-btn">
-            <span class="aui-iconfont aui-icon-left" onclick="api.closeWin()"></span>
+            <span class="aui-iconfont aui-icon-left" onclick="closeWin()"></span>
         </a>
         <div class="aui-title aui-text-white">添加菜单</div>
     </header>
     <div class="aui-content aui-margin-b-15">
-        <ul class="aui-list aui-form-list margin-t-header">
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-label">
-                        菜名：
+        <form id="addForm">
+            <ul class="aui-list aui-form-list margin-t-header">
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            菜名：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input type="text" name="Menus[name]" id="menusName" placeholder="请输入添加的菜名">
+                        </div>
                     </div>
-                    <div class="aui-list-item-input">
-                        <input type="text" id="menusName" placeholder="请输入添加的菜名">
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            价格：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input name="Menus[price]" type="text" id="menusPrice" placeholder="请输入菜名价格">
+                        </div>
+                        <div class="aui-list-item-right">
+                            <div class="" style="position:relative;width:30px;">元/份</div>
+                        </div>
                     </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-label">
-                        价格：
-                    </div>
-                    <div class="aui-list-item-input">
-                        <input type="text" id="menusPrice" placeholder="请输入菜名价格">
-                    </div>
-                    <div class="aui-list-item-right">
-                        <div class="" style="position:relative;width:30px;">元/份</div>
-                    </div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-label">
-                        菜品图片：
-                    </div>
-                    <div type="file"></div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-label">
-                       简介：
-                    </div>
-                    <div class="aui-list-item-input">
-                        <input type="textarea" placeholder="请输入菜名简介"></input>
-                    </div>
-                </div>
-            </li>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            菜品图片：
+                        </div>
+                        <div class="aui-btn aui-btn-primary" onclick="selectPic()">选择图</div>
 
-        </ul>
-        <p><div class="aui-btn aui-btn-primary aui-btn-block" onclick="getMenusinfo()" style="width: 90%;margin: 0 auto;">提交</div></p>
+                        <input type="hidden"  name="index_pic" id="index_pic">
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                           简介：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <textarea name="Menus[brief]" type="textarea" placeholder="请输入菜名简介"></textarea>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </form>
+
+        <div>
+            <div class="aui-btn aui-btn-primary aui-btn-block" onclick="getMenusinfo()" style="width: 90%;margin: 0 auto;">
+                提交
+            </div>
+        </div>
+
     </div>
 </body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript" src="../script/quickos.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../template/shop.js"></script>
 <script type="text/javascript">
 apiready=function()
 {
-    init();
-    function init()
+    closeWin=function()
     {
-        getMenusinfo();
-    }
-
-    function getMenusinfo()
-    {
-        if($api.getStorage("addShopMenus")&&$api.getStorage("addShopMenus")>0)
+        api.sendEvent({
+            name:"init-shopmenus"
+        });
+        setTimeout(function()
         {
-            // $("#login-content").addClass("hidden");
-            // $("#user-content").removeClass("hidden");
-            alert(1)
+            api.closeWin();
+        },500);
+    }
+    function getPic(type,cb)
+    {
+            var callback=cb;
+            api.getPicture(
+            {
+                sourceType: type,
+                encodingType: 'jpg',
+                mediaValue: 'pic',
+                destinationType: 'url',
+                allowEdit: true,
+                saveToPhotoAlbum: true
+            }, function (ret, err) 
+                {
+                callback(ret, err);
+                });
+    }
+   //选择图片
+   selectPic=function()
+   {
+        getPic("album",function(ret,err)
+        {
+
+            if(ret.data)
+            {
+                //把选择到的图片路径赋值这货
+
+                $("#index_pic").val(ret.data);
+            }
+        })
+   }
+
+   getMenusinfo=function()
+    {
+
+            //先拿form数据
+            var formData=$("#addForm").serializeArray();
+            formData=$api.handleFormData(formData);
+        
             var url=config.shop.addShopMenus;
-            Quickos.api.get(url,function(ret)
+
+            Quickos.api.attachMulUpload(url,formData,{index_pic:formData["index_pic"]},function(ret)
             {
 
                 if(ret)
                 {
                     if(ret.success)
                     {
-                        alert(2)
-                        //存储菜单信息
-                        $api.setStorage("Menus",ret.data.Menus);
+                        api.toast({
+                            msg:"创建成功",
+                            duration:1000
+                        });
+
+                       /* $api.setStorage("Menus",ret.data.Menus);
                         //绑定菜单名字
                         $("#menusName").text(ret.data.Menus.name);
                         //绑定菜单价格
@@ -157,11 +211,14 @@ apiready=function()
                         $("#menusPrice").text(menusPrice);
                         //绑定简介内容
                         var menusBrief=ret.data.Menus.brief;
-                        $("#menusBrief").text(menusBrief);
+                        $("#menusBrief").text(menusBrief);*/
+                       //更新我的菜单列表页 myshopmenus
+                        api.sendEvent({
+                            name:"init-shopmenus"
+                        });
                     }
                 }
             });
-        }
         
     }
 }

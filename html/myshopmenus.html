@@ -78,8 +78,7 @@
             <span class="aui-iconfont aui-icon-plus" onclick="addMenus()"></span>
         </a>
     </header>
-    <div class="darktitle"></div>
-    <div id="content" class="">
+    <div id="content" class="margin-t-header">
 
     </div>
 
@@ -110,7 +109,7 @@ function goback () {
 function openNewWin() {
     api.openWin ({
         name: 'login',
-        url: './'+'login'+'.html',
+        url: './login.html',
         rect:{
             x:0,
             y:0,
@@ -123,13 +122,17 @@ function openNewWin() {
 function addMenus() {
     api.openWin ({
         name: 'addShopMenus',
-        url: './'+'addShopMenus'+'.html',
+        url: './addShopMenus.html',
         bounces: false
     });
 }
 
 apiready=function()
 {
+    //监听事件
+    api.addEventListener({name:"init-shopmenus"},function (ret,err) {
+        loaction.reload();
+    });
     init();
     function init()
     {

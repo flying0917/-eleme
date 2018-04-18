@@ -16,10 +16,10 @@
         params.data.values = $.extend({},params.data.values,{fromApp:true});
         api.ajax(params, function (ret, err) {
             console.log(params.url);
-            console.log(JSON.stringify(ret))
+            
             console.log(JSON.stringify(ret.body));
 
-
+            
             if(ret)
             {
                 if(ret.body)
@@ -206,6 +206,26 @@
 
         });
     };
+
+    http_api.attachMulUpload = function (url,param,file_path_obj,cb) {
+        var reqUrl = url;
+        var callback=cb;
+        this.ajax({
+            data: {
+                files: file_path_obj,
+                values:param
+            },
+            reqType:"upload",
+            dataType: 'json',
+            method: 'post',
+            url: reqUrl,
+            report:false,
+            timeout:3000
+        }, function (ret, err) {
+            callback(ret,err);
+        });
+    }
+
 
     http_api.attachUpload = function (file_path, module) {
         url = this.url('main/attach/upload');//user/info/uploadavatar

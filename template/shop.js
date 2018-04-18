@@ -277,12 +277,19 @@ var shopTemplate=
                       <div class="itemshelf">
                           <div class="shelfinfo01">{{=it[x].name}}</div>
                           <div class="shelfinfo03">{{=it[x].brief}}</div>
-                          <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;月售2份</div>
+                          <div class="shelfinfo02 staring">
+                                <div class="buybtn"><p tapmode="" onclick="buyfood(this,{{=x}})" data-price="{{=it[x].price}}" id="initClick{{=it[x].id}}">￥{{=it[x].price}}</p>
+                                  <span class="minusorder">
+                                      <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
+                                      <span class="minus" tapmode="" data-price="{{=it[x].price}}" onclick="minuscash(this,{{=x}})">－</span>
+                                  </span>
+                              </div>月售2份
+                            </div>
                       </div>
                       <div class="buybtn"><p tapmode="" onclick="buyfood(this,{{=x}})" data-price="{{=it[x].price}}" id="initClick{{=it[x].id}}">￥{{=it[x].price}}</p>
                           <span class="minusorder">
                               <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
-                              <span class="minus" tapmode="" data-price="{{=it[x].price}}" onclick="minuscash(this,{{=x}})">－</span>
+                              <span class="minus" tapmode=""  onclick="minuscash(this,{{=x}})">－删除</span>
                           </span>
                       </div>
                   </div>
