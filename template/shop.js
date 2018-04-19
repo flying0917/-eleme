@@ -153,12 +153,20 @@ var shopTemplate=
                     <div class="aui-font-size-12 aui-text-left">订单编号：{{=it.order_number}}</div>
                     {{if(it.status_text=="等待商家接单"){}}
                     <div class="aui-text-right">
+                    {{if(it.roleid==1){}}
+                        <span class="aui-btn aui-btn-danger  aui-btn-sm" onclick="receiveOrder(this)">接单</span>
+                         <span class="aui-btn aui-btn-danger  aui-btn-sm" onclick="cancelShopOrder(this)">取消订单</span>
+                    {{ } else{ }}
                         <span class="aui-btn aui-btn-danger  aui-btn-sm" onclick="cancelOrder(this)">取消订单</span>
+                     {{ } }}
                     </div>
                     {{}else if(it.status_text=="商家已接单，请等待配送"){ }}
+                    {{if(it.roleid==1){}}
+                    {{ } else{ }}
                     <div class="aui-text-right">
                         <span class="aui-btn aui-btn-finish  aui-btn-sm" onclick="finishOrder(this)">确认订单</span>
                     </div>
+                    {{  } }}
                     {{}}}
                 </div>
                 <div class="aui-card-list-content-padded">
@@ -247,7 +255,7 @@ var shopTemplate=
                      <div class="aui-media-list-item-inner">
                          <div class="aui-list-item-inner aui-list-item-arrow">
                              <div class="aui-list-item-text">
-                                 <div class="aui-list-item-title aui-font-size-16 aui-ellipsis-1" style="width:60%;font-size:16px;"><b>{{=it[x].user_name}}</b></div>
+                                 <div class="aui-list-item-title aui-font-size-16 aui-ellipsis-1" style="width:60%;font-size:16px;"><b>顾客：{{=it[x].user_name}}</b></div>
                                  <div class="aui-list-item-right aui-ellipsis-1">{{=it[x].status_text}}</div>
                              </div>
                              <div class="aui-list-item-text aui-ellipsis-1">
@@ -288,6 +296,7 @@ var shopTemplate=
                       </div>
                       <div class="aui-clearfix aui-padded-5">
                           <div class="aui-btn aui-btn-sm aui-btn-danger aui-pull-right" style="margin:5px;" onclick="deleteItem({{=it[x].id}})">删除</div>
+                          <div class="aui-btn aui-btn-sm aui-btn-warning aui-pull-right" style="margin:5px;" onclick="editItem({{=it[x].id}})">编辑</div>
                           <div class="aui-btn aui-btn-sm aui-btn-success aui-pull-right" style="margin:5px;"  onclick="up(this,{{=it[x].id}})">{{?it[x].status==="1"}}待上架{{??it[x].status==="2"}}已上架{{??it[x].status==="3"}}已下架{{?}}</div>
                       </div>
 

@@ -16,6 +16,8 @@
         params.data.values = $.extend({},params.data.values,{fromApp:true});
         api.ajax(params, function (ret, err) {
             console.log(params.url);
+
+            console.log(JSON.stringify(err))
             
             console.log(JSON.stringify(ret.body));
 

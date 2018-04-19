@@ -79,35 +79,7 @@
         </a>
     </header>
     <div id="content" class="margin-t-header">
-        <div class="item style2" data-id="{{=it[x].id}}" data-price="{{=it[x].price}}" data-name="{{=it[x].name}}" data-count="0">
-            <div class="itemshelf">
-                <div class="shelfinfo01">{{=it[x].name}}</div>
-                <div class="shelfinfo03">{{=it[x].brief}}</div>
-                <div class="shelfinfo02 staring">
-                    <div class="buybtn"><p tapmode="" onclick="buyfood(this,{{=x}})" data-price="{{=it[x].price}}" id="initClick{{=it[x].id}}">￥{{=it[x].price}}</p>
-                        <span class="minusorder">
-                                      <img src="../image/foodlist_bg_foodnum.png" alt="" class="numbg"><span class="thisordernum">0</span>
-                                      <span class="minus" tapmode="" data-price="{{=it[x].price}}" onclick="minuscash(this,{{=x}})">－</span>
-                                  </span>
-                    </div>
-                </div>
-            </div>
-            <div class="aui-clearfix aui-padded-5">
-                <div class="aui-btn aui-btn-sm aui-btn-danger aui-pull-right" style="margin:5px;">删除</div>
-                <div class="aui-btn aui-btn-sm aui-btn-success aui-pull-right" style="margin:5px;">上架</div>
-            </div>
 
-        </div>
-    </div>
-
-    <div class="h50"></div>
-    <div class="bottom" style="z-index:999999;">
-        <img src="../image/cart.png" alt="">
-        <span class="buyinfo" id="buyinfo"><span id="buynum">1</span>份 ￥<span id="totalcash">10</span></span>
-        <span id="minbuy">￥0元起送</span>
-
-        <span  id="cartbtn" tapmode="total-hover" class="pull-right btn-primary" onclick="onAddCart()">加入购物车</span>
-        <span id="buyit" tapmode="total-hover" class="pull-right btn-success" onclick="confirmOrder()">去结算</span>
     </div>
     <input type="hidden" id="shopname">
 </body>
@@ -145,12 +117,24 @@ function addMenus() {
     });
 }
 
+function editItem(id)
+{
+    api.openWin ({
+        name: 'editShopMenus',
+        url: './editShopMenus.html',
+        bounces: false,
+        pageParam:{
+            id:id
+        }
+    });
+}
+
 
 apiready=function()
 {
     //监听事件
     api.addEventListener({name:"init-shopmenus"},function (ret,err) {
-        loaction.reload();
+        location.reload();
     });
     init();
     function init()

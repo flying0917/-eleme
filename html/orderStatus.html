@@ -114,7 +114,69 @@ apiready = function(){
                     }
             });
     };
-    //取消订单
+
+    //接收订单
+    receiveOrder=function(that)
+    {
+        var $that=$(that);
+        var url=config.order.receiveOrder+"&id="+api.pageParam.id;
+        Quickos.api.get(url,function(ret)
+        {
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    api.toast(
+                        {
+                            msg:ret.successText,
+                            duration:1000
+                        });
+                    $("#order-status-tip").text("你已经接单，请尽快配送");
+                    $that.remove();
+                }
+                else
+                {
+                    api.toast(
+                        {
+                            msg:ret.errorText,
+                            duration:1000
+                        });
+                }
+            }
+        });
+    };
+    //商家取消订单
+    cancelShopOrder=function(that)
+    {
+        var $that=$(that);
+        var url=config.order.shopCancelOrder+"&id="+api.pageParam.id;
+        Quickos.api.get(url,function(ret)
+        {
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    api.toast(
+                        {
+                            msg:ret.successText,
+                            duration:1000
+                        });
+                    $("#order-status-tip").text("商家取消订单");
+                    $that.remove();
+                }
+                else
+                {
+                    api.toast(
+                        {
+                            msg:ret.errorText,
+                            duration:1000
+                        });
+                }
+            }
+        });
+    };
+
+    //普通用户取消订单
     cancelOrder=function(that)
     {
         var $that=$(that);
@@ -185,7 +247,10 @@ apiready = function(){
                 console.log(JSON.stringify(ret))
                 if(ret.success)
                 {
-                   var temStr=doT.template(shopTemplate.orderStatusTpl())(ret.data);
+                    var userinfo=$api.getStorage("member");
+
+                    var data=$.extend(ret.data,{roleid:userinfo.roleid});
+                   var temStr=doT.template(shopTemplate.orderStatusTpl())(data);
 
                     $("#list-content").html(temStr);
                 }

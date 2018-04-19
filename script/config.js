@@ -14,20 +14,24 @@ var config=
                 getShopMenus:_BASE_URL+"/dinner/index.php?r=site/GetMenu",//获取饭店的菜单
                 getShopInfo:_BASE_URL+"/dinner/index.php?r=site/GetShopInfo",//获取饭店信息
                 confirmOrder:_BASE_URL+"/dinner/index.php?r=site/ConfirmOrderAjax",//确认订单
-                getMessage:_BASE_URL+"/dinner/index.php?r=site/GetMessageAjax",//确认订单
-                sendMessage:_BASE_URL+"/dinner/index.php?r=site/submitMessageForApp",//确认订单
-                shopOrderlist:_BASE_URL+"/dinner/index.php?r=site/FoodorderAjax",//确认我的订单
+                getMessage:_BASE_URL+"/dinner/index.php?r=site/GetMessageAjax",//获取留言信息
+                sendMessage:_BASE_URL+"/dinner/index.php?r=site/submitMessageForApp",//留言
+                shopOrderlist:_BASE_URL+"/dinner/index.php?r=site/FoodorderAjax",//商店订单
                 shopMenus:_BASE_URL+"/dinner/index.php?r=site/menusAjax",//我的菜单
                 addShopMenus:_BASE_URL+"/dinner/index.php?r=menus/createAjax",//增加菜单
                 deleteMenus:_BASE_URL+"/dinner/index.php?r=menus/deleteAjax",//删除菜单
                 upMenus:_BASE_URL+"/dinner/index.php?r=menus/audit",//上架菜单
+                formMenus:_BASE_URL+"/dinner/index.php?r=menus/formAjax",//获取单个菜单
+                editMenus:_BASE_URL+"/dinner/index.php?r=menus/updateAjax",//更新单个菜单
             },
         order:
             {
                 getOrderInfoById:_BASE_URL+"/dinner/index.php?r=site/MyOrderAjax",//通过id获取订单信息
-                cancelOrderById:_BASE_URL+"/dinner/index.php?r=site/CancelOrder",//取消订单
+                cancelOrderById:_BASE_URL+"/dinner/index.php?r=site/CancelOrder",//普通用户取消订单
                 getMyOrderList:_BASE_URL+"/dinner/index.php?r=site/MyOrderListAjax",//我的订单列表
-                finishOrder:_BASE_URL+"/dinner/index.php?r=site/finishOrder",//我的订单列表
+                finishOrder:_BASE_URL+"/dinner/index.php?r=site/finishOrder",//完成订单
+                receiveOrder:_BASE_URL+"/dinner/index.php?r=foodorder/deductMoney",//接收订单
+                shopCancelOrder:_BASE_URL+"/dinner/index.php?r=foodorder/deductMoney",//商家取消订单
 
             }
     };
