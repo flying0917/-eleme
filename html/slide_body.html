@@ -85,47 +85,6 @@
     </style>
 </head>
 <body>
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <!--First Slide-->
-            <div class="swiper-slide"> 
-                <img src="../image/firstcover01.png" alt="">
-            </div>
-
-            <!--Second Slide-->
-            <div class="swiper-slide">
-                <img src="../image/firstcover02.png" alt="">
-            </div>
-            
-            <div class="swiper-slide">
-                <img src="../image/firstcover03.png" alt="">
-            </div>
-        </div>
-        <div class="pagination"></div>
-    </div>
-
-    <div class="row section2">
-        <div class="col">
-            <div class="item shelf2 favorable" tapmode="itemhover" onclick="openNewWin('discount')">
-                <div class="itemlogo userlogo"><img src="../image/firstcover04.png" alt=""></div>
-                <div class="itemshelf">
-                    <div class="shelfinfo01">优惠活动</div>
-                    <div class="shelfinfo02">打折应有尽有</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="item shelf2 nearby" tapmode="itemhover" onclick="openDianping()">
-                <div class="itemlogo userlogo"><img src="../image/firstcover05.png" alt=""></div>
-                <div class="itemshelf">
-                    <div class="shelfinfo01">附近团购</div>
-                    <div class="shelfinfo02">查看附近团购</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- 第三部分 -->
     <!-- 如何复用listitem，1.最简单的样式不变，直接复制  2.复制以后修改其中某一行的样式，最外层用div包裹给予新class，即可隔离原有的样式 -->
     <div class="h10"></div>
@@ -202,14 +161,7 @@
     }
 
     window.onload = function() {
-        var mySwiper = new Swiper('.swiper-container',{
-            mode:'horizontal',
-            loop: true,
-            speed:750,
-            pagination: '.pagination'
-        });
 
-        mySwiper.startAutoplay();
     }
 
     apiready = function  () {

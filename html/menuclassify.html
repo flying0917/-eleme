@@ -226,35 +226,72 @@ function openNewWin() {
         bounces: false
     });
 }
+var userinfo=$api.getStorage("member");
+var isLogin=parseInt($api.getStorage("isLogin"));
 //添加购物车
 function onAddCart()
 {
-    _cart=new CartHelper();
-    var shopName=$("#shopname").val();
-    _cart.Init(api.pageParam.id,shopName);
-    //获取数据
-    $("#content .item").each(function()
+    console.log(JSON.stringify(userinfo))
+    if(userinfo)
     {
-        var id=$(this).attr("data-id");
-        var price=$(this).attr("data-price");
-        var name=$(this).attr("data-name");
-        var count=$(this).attr("data-count");
-        if(parseInt(count))
+        if(userinfo.roleid&&parseInt(userinfo.roleid)===1)
         {
-            _cart.Add(id,name,count,price);
-        }
 
-        api.openWin({
-            name:"buycart",
-            url:"./buycart.html"
+                api.toast({
+                    msg:"购物车功能，目前暂未对商家账号开放",
+                    duration:1000
+                });
+                return false;
+        }
+    }
+    if(isLogin)
+    {
+        _cart=new CartHelper();
+        var shopName=$("#shopname").val();
+        _cart.Init(api.pageParam.id,shopName);
+        //获取数据
+        $("#content .item").each(function()
+        {
+            var id=$(this).attr("data-id");
+            var price=$(this).attr("data-price");
+            var name=$(this).attr("data-name");
+            var count=$(this).attr("data-count");
+            if(parseInt(count))
+            {
+                _cart.Add(id,name,count,price);
+            }
+
+            api.openWin({
+                name:"buycart",
+                url:"./buycart.html"
+            });
         });
-    });
+    }
+    else
+    {
+        api.toast({
+            msg:"请先登录",
+            duration:1000
+        });
+    }
 }
 
 function confirmOrder()
 {
+    console.log(JSON.stringify(userinfo))
+    if(userinfo)
+    {
+        if(userinfo.roleid&&parseInt(userinfo.roleid)===1)
+        {
+            api.toast({
+                msg:"订餐功能，目前暂未对商家账号开放",
+                duration:1000
+            });
+            return false;
 
-    if($api.getStorage("isLogin"))
+        }
+    }
+    if(isLogin)
     {
         var shopName=$("#shopname").val();
         var tem_order={
@@ -278,7 +315,6 @@ function confirmOrder()
                 tem_order["Items"].push(temObj);
             }
         });
-        console.log(JSON.stringify(tem_order));
         api.openWin({
             name:"confirm",
             url:"./confirm.html",

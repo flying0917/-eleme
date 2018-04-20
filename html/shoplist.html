@@ -111,13 +111,19 @@ apiready = function(){
             {
                 if(ret.success)
                 {
-                    var temStr=doT.template(shopTemplate.shopOrderlist())(ret.data);
-
+                    var userinfo=$api.getStorage("member");
+                    var data={data:ret.data,roleid:userinfo.roleid}
+                    var temStr=doT.template(shopTemplate.shopOrderlist())(data);
+                    console.log(userinfo.roleid)
                     $("#list-content").append(temStr);
                     page++;
                     if(ret.data.length)
                     {
                         canGet=true;
+                    }
+                    else
+                    {
+                        canGet=false;
                     }
                 }
                 else

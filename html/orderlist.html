@@ -6,6 +6,8 @@
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
     <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/sm.css">
+    <link rel="stylesheet" href="../css/sm-extend.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css" />
     <link rel="stylesheet" type="text/css" href="../css/idangerous.swiper.css">
 
@@ -54,9 +56,20 @@
         </a>
         <div class="aui-title aui-text-white">我的订单</div>
     </header>
+    <form  action="javascript:doSearch();" style="margin-top:2.2rem;">
 
+        <div class="bar bar-header-secondary">
+            <div class="searchbar" style="">
+                <a class="searchbar-cancel">取消</a>
+                <div class="search-input">
+                    <label class="icon icon-search" for="search-input"></label>
+                    <input type="search" id='search-input' placeholder='输入商店名称'/>
+                </div>
+            </div>
+        </div>
+    </form>
     <div class="aui-content margin-t-header" id="list-content">
-
+        sdf
     </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -67,6 +80,7 @@
 <script type="text/javascript" src="../script/config.js"></script>
 <script type="text/javascript" src="../script/cart.js"></script>
 <script type="text/javascript" src="../template/shop.js"></script>
+<script type='text/javascript' src='../script/sm.js' charset='utf-8'></script>
 <script type="text/javascript">
 function goback () {
     api.closeWin({name:'orderlist'});
@@ -79,6 +93,7 @@ apiready = function(){
     getList();
     var page=1;
     var canGet=true;
+    var keyword="";
     openOrderStatus=function(id)
     {
         var order_id=id;
@@ -100,10 +115,22 @@ apiready = function(){
             return false;
         }
     });
+    //搜索
+    doSearch=function()
+    {
+        keyword=$("#search-input").val();
+        $("#list-content").html("");
+        page=1;
+        getList();
+    };
     //获取饭店菜单列表
     function getList()
     {
         var url=config.order.getMyOrderList+"&page="+page;
+        if(keyword)
+        {
+            url+="&k="+keyword;
+        }
         Quickos.api.get(url,function(ret)
         {
             if(ret)

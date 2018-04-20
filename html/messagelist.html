@@ -76,19 +76,16 @@
     </style>
 </head>
 <body>
-    <header class="aui-bar aui-bar-nav top-fixed">
-        <a class="aui-pull-left aui-btn">
-            <span class="aui-iconfont aui-icon-left" onclick="api.closeWin()"></span>
-        </a>
-        <div class="aui-title aui-text-white">我的菜单</div>
-        <a class="aui-pull-right aui-btn aui-btn-outlined">
-            <span class="aui-iconfont aui-icon-plus" onclick="addMenus()"></span>
-        </a>
-    </header>
-    <div id="content" class="margin-t-header">
+<header class="aui-bar aui-bar-nav top-fixed">
+    <a class="aui-pull-left aui-btn">
+        <span class="aui-iconfont aui-icon-left" onclick="api.closeWin()"></span>
+    </a>
+    <div class="aui-title aui-text-white">收到的留言</div>
+</header>
+<div id="content" class="margin-t-header">
 
-    </div>
-    <input type="hidden" id="shopname">
+</div>
+<input type="hidden" id="shopname">
 </body>
 <script type="text/javascript" src="../script/zepto.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -97,133 +94,180 @@
 <script type="text/javascript" src="../script/config.js"></script>
 <script type="text/javascript" src="../script/cart.js"></script>
 <script type="text/javascript" src="../template/shop.js"></script>
+<script type="text/javascript" src="../script/aui-dialog.js"></script>
 <script type="text/javascript">
-function goback () {
-    api.closeWin({name:'myshopmenus'});
-}
-
-
-function openNewWin() {
-    api.openWin ({
-        name: 'login',
-        url: './login.html',
-        rect:{
-            x:0,
-            y:0,
-            w:'auto',
-            h:'auto'
-        },
-        bounces: false
-    });
-}
-function addMenus() {
-    api.openWin ({
-        name: 'addShopMenus',
-        url: './addShopMenus.html',
-        bounces: false
-    });
-}
-
-function editItem(id)
-{
-    api.openWin ({
-        name: 'editShopMenus',
-        url: './editShopMenus.html',
-        bounces: false,
-        pageParam:{
-            id:id
-        }
-    });
-}
-
-
-apiready=function()
-{
-    //监听事件
-    api.addEventListener({name:"init-shopmenus"},function (ret,err) {
-        location.reload();
-    });
-    var page=1;
-    var canGet=true;
-    init();
-    function init()
-    {
-        getMenuList();
+    function goback () {
+        api.closeWin({name:'myshopmenus'});
     }
 
-    //分页
-    $api.isScrollDown("#content",function(ret)
+
+    function openNewWin() {
+        api.openWin ({
+            name: 'login',
+            url: './login.html',
+            rect:{
+                x:0,
+                y:0,
+                w:'auto',
+                h:'auto'
+            },
+            bounces: false
+        });
+    }
+    function addMenus() {
+        api.openWin ({
+            name: 'addShopMenus',
+            url: './addShopMenus.html',
+            bounces: false
+        });
+    }
+
+    function editItem(id)
     {
-        if(ret&&canGet)
+        api.openWin ({
+            name: 'editShopMenus',
+            url: './editShopMenus.html',
+            bounces: false,
+            pageParam:{
+                id:id
+            }
+        });
+    }
+
+
+    apiready=function()
+    {
+        //监听事件
+        api.addEventListener({name:"init-shopmenus"},function (ret,err) {
+            location.reload();
+        });
+        var page=1;
+        var canGet=true;
+        init();
+        function init()
         {
-            canGet=false;
             getMenuList();
-            return false;
         }
-    });
 
-    //上下架菜单
-    up=function(that,id)
-    {
-        $that=$(that);
-        var url=config.shop.upMenus+"&id="+id;
-        Quickos.api.get(url,function(ret)
+        //分页
+        $api.isScrollDown("#content",function(ret)
         {
-            if(ret)
+            if(ret&&canGet)
             {
-                if(ret.success)
-                {
-                   $that.css("background-color",ret.status_color).text(ret.status_text);
-                }
-                else
-                {
-                    api.toast({
-                        msg:ret.errorText,
-                        duration:1000
-                    });
-                }
+                canGet=false;
+                getMenuList();
+                return false;
             }
         });
-    }
-    //删除菜单
-    deleteItem=function(id)
-    {
-        var url=config.shop.deleteMenus+"&id="+id;
-        Quickos.api.get(url,function(ret)
+
+        //上下架菜单
+        up=function(that,id)
         {
-            console.log(JSON.stringify(ret));
-            if(ret)
+            $that=$(that);
+            var url=config.shop.upMenus+"&id="+id;
+            Quickos.api.get(url,function(ret)
             {
-                if(ret.success)
+                if(ret)
                 {
-                    api.toast({
-                        msg:ret.msg,
-                        duration:1000
-                    });
-                    setTimeout(function()
+                    if(ret.success)
                     {
-                        location.reload();
-                    },1000)
+                        $that.css("background-color",ret.status_color).text(ret.status_text);
+                    }
+                    else
+                    {
+                        api.toast({
+                            msg:ret.errorText,
+                            duration:1000
+                        });
+                    }
                 }
-                else
-                {
-                    api.toast({
-                        msg:ret.errorText,
-                        duration:1000
-                    });
-                }
-            }
-        });
-    }
-    //获取饭店菜单列表
-    function getMenuList()
-    {
-        var url=config.shop.shopMenus+"&shop_id="+api.pageParam.id+"&page="+page;
-        Quickos.api.get(url,function(ret)
+            });
+        }
+        //删除留言
+        delteMessage=function(id)
         {
-            if(ret)
+            if(confirm("您确定要删除留言吗？"))
             {
-                    var temStr=doT.template(shopTemplate.shopMenus())(ret.data);
+                var url=config.shop.delteMessage+"&id="+id;
+                Quickos.api.get(url,function(ret)
+                {
+                    if(ret)
+                    {
+                        if(ret.success)
+                        {
+                            api.toast({
+                                msg:ret.msg,
+                                duration:1000
+                            });
+                            setTimeout(function()
+                            {
+                                location.reload();
+                            },1000)
+                        }
+                        else
+                        {
+                            api.toast({
+                                msg:ret.errorText,
+                                duration:1000
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
+        reply=function(id)
+        {
+            var replyId=id;
+
+            var text=prompt("请输入回复","");
+
+            if(text!=null && text!="")
+            {
+                var url=config.shop.replyMessage,
+                    postData={content:text,message_id:replyId};
+                Quickos.api.post(url,postData,function(ret)
+                {
+                    if(ret)
+                    {
+                        if(ret.success)
+                        {
+                            api.toast({
+                                msg:"回复成功",
+                                duration:1000
+                            });
+                            setTimeout(function()
+                            {
+                                location.reload();
+                            },1000)
+                        }
+                        else
+                        {
+                            api.toast({
+                                msg:ret.errorText,
+                                duration:1000
+                            });
+                        }
+                    }
+                });
+            }
+            else
+            {
+                api.toast({
+                    msg:"请输入要回复的内容",
+                    duration:1000
+                });
+            }
+        }
+        //获取饭店菜单列表
+        function getMenuList()
+        {
+            var url=config.shop.messageList+"&page="+page;
+            Quickos.api.get(url,function(ret)
+            {
+                if(ret)
+                {
+                    var temStr=doT.template(shopTemplate.message())(ret.data);
 
                     // $("#shopname").val(ret.data.shop.name);
                     $("#content").append(temStr);
@@ -236,10 +280,10 @@ apiready=function()
                     {
                         canGet=false;
                     }
-            }
-        });
-    }
+                }
+            });
+        }
 
-}
+    }
 </script>
 </html>

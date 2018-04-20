@@ -147,7 +147,20 @@ var shopTemplate=
             <section class="aui-content-padded">
             <div class="aui-card-list">
                 <div class="aui-card-list-header aui-text-center" style="display:block;">
-                    <b id="order-status-tip">{{=it.status_text}}</b><br>
+                    <b id="order-status-tip">
+                    {{if(it.roleid==1){ }}
+                        {{if(it.status_text=="等待商家接单"){ }}
+                        待接单
+                        {{ }else if(it.status_text=="商家已接单，请等待配送"){ }}
+                        您已经接单，请尽快配送
+                        {{ }else{}}
+                        {{=it.status_text}}
+                        {{ } }}
+                     {{}else{}}
+                        {{=it.status_text}}
+                     {{}}}
+                    </b>
+                    <br>
                     <div class="aui-font-size-12 aui-text-left">送货地址：{{=it.address}}</div>
                     <div class="aui-font-size-12 aui-text-left">下单时间：{{=it.create_order_date}} {{=it.create_time}}</div>
                     <div class="aui-font-size-12 aui-text-left">订单编号：{{=it.order_number}}</div>
@@ -250,22 +263,36 @@ var shopTemplate=
         {
             var tpl= (function tpl() {/*
              <ul class="aui-list aui-media-list">
-             {{for(var x in it){}}
-                 <li class="aui-list-item aui-list-item-middle" onclick="openOrderStatus({{=it[x].id}})">
+             {{for(var x in it.data){}}
+                 <li class="aui-list-item aui-list-item-middle" onclick="openOrderStatus({{=it.data[x].id}})">
                      <div class="aui-media-list-item-inner">
                          <div class="aui-list-item-inner aui-list-item-arrow">
                              <div class="aui-list-item-text">
-                                 <div class="aui-list-item-title aui-font-size-16 aui-ellipsis-1" style="width:60%;font-size:16px;"><b>顾客：{{=it[x].user_name}}</b></div>
-                                 <div class="aui-list-item-right aui-ellipsis-1">{{=it[x].status_text}}</div>
+                                 <div class="aui-list-item-title aui-font-size-16 aui-ellipsis-1" style="width:60%;font-size:16px;"><b>顾客：{{=it.data[x].user_name}}</b></div>
+                                 <div class="aui-list-item-right aui-ellipsis-1">
+                                 {{if(it.roleid==1){ }}
+                                    {{if(it.data[x].status_text=="等待商家接单"){ }}
+                                    待接单
+                                    {{ }else if(it.data[x].status_text=="商家已接单，请等待配送"){ }}
+                                    您已经接单，请尽快配送
+                                    {{ }else{}}
+                                    {{=it.data[x].status_text}}
+                                    {{ } }}
+                                 {{}else{}}
+                                    {{=it.data[x].status_text}}
+                                 {{}}}
+                                 </div>
                              </div>
                              <div class="aui-list-item-text aui-ellipsis-1">
-                                {{=it[x].create_time}}
+                                {{=it.data[x].create_time}}
                              </div>
                              <div class="aui-list-item-text">
-                                 {{=it[x].order_text}}
+
+                                {{=it.data[x].order_text}}
+
                              </div>
                              <div class="aui-list-item-text">
-                                 <span style="color:black;">￥{{=it[x].total_price}}</span>
+                                 <span style="color:black;">￥{{=it.data[x].total_price}}</span>
                              </div>
                          </div>
                      </div>
@@ -302,10 +329,42 @@ var shopTemplate=
 
                   </div>
                   {{ } }}
-                 {{ }else{ }}
-                     <img src="../image/m_errorpages_icon_order.png" alt="" style="width:180px;margin-top:150px;" class="centerbg">
-                     <div class="info" style=""color: #888;margin-top: 30px;>没有找到菜单</div>
                  {{ } }}
+
+             */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+            return tpl;
+        },
+        //留言模板
+        message:function()
+        {
+            var tpl= (function tpl() {/*
+                {{if(it&&it.length){}}
+                 {{for(var x in it){ }}
+                 <div class="aui-card-list">
+                     <div class="aui-card-list-header aui-card-list-user aui-border-b">
+                         <div class="aui-card-list-user-name">
+                             <div>{{=it[x].user_name}}：</div>
+                             <small>{{=it[x].create_time}}</small>
+                         </div>
+                         <div class="aui-card-list-user-info">{{=it[x].content}}</div>
+                     </div>
+                     <div class="aui-card-list-footer aui-border-t">
+                         <div class="aui-text-danger" onclick="delteMessage({{=it[x].id}})"><i class="aui-iconfont aui-icon-trash"></i>删除</div>
+                         <div onclick="reply({{=it[x].id}})"><i class="aui-iconfont aui-icon-edit"></i>回复</div>
+                     </div>
+                     {{for(var y in it[x].replys){}}
+                     <div class="aui-card-list-header aui-card-list-user aui-border-b" style="padding-left:1.7rem;">
+                         <div class="aui-card-list-user-name">
+                             <div>{{=it[x].replys[y].user_name}}</div>
+                             <small>{{=it[x].replys[y].create_time}}</small>
+                         </div>
+                         <div class="aui-card-list-user-info">{{=it[x].replys[y].content}}</div>
+                     </div>
+                     {{}}}
+                 </div>
+                  {{ } }}
+                 {{ } }}
+
              */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
             return tpl;
         },

@@ -41,6 +41,7 @@
 		<div class="itemshelf">
 			<div class="shelfinfo01">个人中心</div>
 			<div class="shelfinfo02" id="username">登陆可享更多特权</div>
+			<div class="shelfinfo02" id="rolename" style="margin-bottom:10px;"></div>
 		</div>
 	</div>
 
@@ -72,7 +73,7 @@
 			
 		</div>
 	</div>
-	<div class="item item-notlogin shop" tapmode="itemhover" onclick="openNewWin('shoplist')">
+	<div class="item item-notlogin shop" tapmode="itemhover" onclick="openNewWin('messagelist')">
 		<div class="itemlogo"><img src="../image/menu_icon_order_list.png" alt=""></div>
 		<div class="itemshelf">
 			<div class="shelfinfo01">留言管理</div>
@@ -141,7 +142,6 @@
                 var url=config.user.getUserInfo;
                 Quickos.api.get(url,function(ret)
                 {
-                    console.log(JSON.stringify(ret))
                     if(ret)
                     {
                         if(ret.success)
@@ -154,10 +154,12 @@
 							if(ret.data.member.roleid==='1')
 							{
 							    $(".member").hide();
+							    $("#rolename").text("您是商家")
 							}
 							else if(ret.data.member.roleid==='0')
 							{
                                 $(".shop").hide();
+                                $("#rolename").text("您是普通用户")
 							}
                             //绑定头像信息
                             if(ret.data.member.avatar)

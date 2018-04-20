@@ -23,6 +23,9 @@ var config=
                 upMenus:_BASE_URL+"/dinner/index.php?r=menus/audit",//上架菜单
                 formMenus:_BASE_URL+"/dinner/index.php?r=menus/formAjax",//获取单个菜单
                 editMenus:_BASE_URL+"/dinner/index.php?r=menus/updateAjax",//更新单个菜单
+                messageList:_BASE_URL+"/dinner/index.php?r=site/messageAjax",//留言列表
+                delteMessage:_BASE_URL+"/dinner/index.php?r=message/deleteAjax",//删除留言
+                replyMessage:_BASE_URL+"/dinner/index.php?r=message/replymsg",//回复留言
             },
         order:
             {

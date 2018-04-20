@@ -35,6 +35,7 @@
                             console.log("-----------------"+params.url)
                             console.log("login change false");
                             $api.setStorage("isLogin",0);
+                            $api.rmStorage("member");
                         }
                         else
                         {
@@ -42,6 +43,7 @@
                             console.log("-----------------"+params.url)
                             console.log("login change true");
                             $api.setStorage("isLogin",1);
+
                         }
                     }
                 }
