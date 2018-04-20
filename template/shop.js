@@ -9,7 +9,7 @@ var shopTemplate=
                       <div class="itemlogo userlogo">{{?it.shops[x].logo}} <img src="{{=it.shops[x].logo}}"> {{??}}<img src="../image/shopcover/jiujiuya.jpeg" alt="">{{?}}</div>
                       <div class="itemshelf">
                           <div class="shelfinfo01">{{=it.shops[x].name}}<span class="fu">付</span><span class="pei">配</span></div>
-                          <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">（2）</div>
+                          <div class="shelfinfo02 staring"></div>
                           <div class="shelfinfo03">{{=it.shops[x].address}}</div>
                           <div class="shelfinfo03">电话：{{=it.shops[x].tel}}</div>
                       </div>
@@ -33,7 +33,7 @@ var shopTemplate=
                       <div class="itemshelf">
                           <div class="shelfinfo01">{{=it[x].name}}</div>
                           <div class="shelfinfo03">{{=it[x].brief}}</div>
-                          <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;月售2份</div>
+
                       </div>
                       <div class="buybtn"><p tapmode="" onclick="buyfood(this,{{=x}})" data-price="{{=it[x].price}}" id="initClick{{=it[x].id}}">￥{{=it[x].price}}</p>
                           <span class="minusorder">
@@ -69,7 +69,7 @@ var shopTemplate=
                       <div class="itemshelf">
                           <div class="shelfinfo01">{{=it.Items[x].Name}}</div>
 
-                          <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;份数：{{=it.Items[x].Count}}份</div>
+                          <div class="shelfinfo02 staring">&nbsp;份数：{{=it.Items[x].Count}}份</div>
                       </div>
 
                       <div class="buybtn"><p tapmode=""  >￥{{=it.Items[x].Price}}</p>
@@ -204,7 +204,7 @@ var shopTemplate=
                         <div class="itemshelf">
                             <div class="shelfinfo01">{{=it.product_info[x].Name}}</div>
 
-                            <div class="shelfinfo02 staring"><img src="../image/star_45.png" alt="">&nbsp;份数：{{=it.product_info[x].Count}}份</div>
+                            <div class="shelfinfo02 staring">&nbsp;份数：{{=it.product_info[x].Count}}份</div>
                         </div>
 
                         <div class="buybtn"><p tapmode=""  >小计￥{{=it.product_info[x].total}}</p>

@@ -156,7 +156,8 @@
         confirmOrder=function(that)
         {
             var $that=$(that);
-            if($api.getStorage("isLogin")&&$api.getStorage("isLogin")===1)
+            var userinfo=$api.getStorage("isLogin");
+            if(userinfo&&parseInt(userinfo)===1)
             {
 
                 var shopName=$that.attr("data-shop-name");
