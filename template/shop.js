@@ -368,4 +368,35 @@ var shopTemplate=
              */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
             return tpl;
         },
+
+        //用户信息模板
+        userInfoTpl:function()
+        {
+            var tpl= (function tpl() {/*
+            <section class="aui-content-padded">
+            <div class="aui-card-list">
+                <div class="aui-card-list-header aui-text-center" style="display:block;">
+                    <b id="order-status-tip">用户信息</b>
+                    <br>
+                    <div class="aui-font-size-12 aui-text-left">用户名：{{=it.member.name}}</div>
+                    <div class="aui-font-size-12 aui-text-left">电话：{{?it.member.mobile}}{{=it.member.mobile}}{{??}}暂无数据{{?}}</div>
+                    <div class="aui-font-size-12 aui-text-left">角色：{{?it.member.roleid==0}}普通用户{{??it.member.roleid==1}}商家用户{{?}}</div>
+
+                </div>
+                {{?it.shop}}
+                <div class="aui-card-list-header aui-text-center" style="display:block;">
+                    <b id="order-status-tip">您的商店</b>
+                    <br>
+                    <div class="aui-font-size-12 aui-text-left">商店名：{{=it.shop.name}}</div>
+                    <div class="aui-font-size-12 aui-text-left">店主姓名：{{=it.shop.linkman}}</div>
+                    <div class="aui-font-size-12 aui-text-left">电话热线：{{=it.shop.tel}}</div>
+                    <div class="aui-font-size-12 aui-text-left">商店状态：{{?it.shop.status==1}}待上市{{??it.shop.status==2}}已上市{{??it.shop.status==3}}被下市{{?}}</div>
+
+                </div>
+                {{?}}
+            </div>
+        </section>
+             */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+            return tpl;
+        },
     }

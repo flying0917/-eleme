@@ -76,22 +76,18 @@
 	<div class="header" id="topbar">
         <div class="left" tapmode="headerhover" onclick="goback()">
             <img src="../image/abc_ic_ab_back_holo_dark.png" alt="" class="logoleft">
-            <span class="title">注册</span>
+            <span class="title">修改密码</span>
         </div>
         <!-- <div class="right" tapmode="headerhover" onclick="">注册</div> -->
     </div>
 
 	<div class="divider"></div>
 	<form action="">
-		<div class="item email"><input type="text" placeholder="用户名" id="name"></div>
-		<div class="item passwd"><input type="text" placeholder="手机号" id="mobile">
-		</div>
-		<div class="item passwd"><input type="password" placeholder="密码" id="passwd">
-		</div>
-		<div class="item passwd"><input type="password" placeholder="确认密码" id="repasswd">
-		</div>
+		<div class="item passwd"><input type="password" placeholder="当前密码" id="curPassword"></div>
+		<div class="item passwd"><input type="password" placeholder="新密码" id="newPassword"></div>
+		<div class="item passwd"><input type="password" placeholder="确认新密码" id="comfirmPassword"></div>
 		<p class="err-tip" is="err-tip"></p>
-		<div class="btn" onclick="signup()" tapmode="submit-hover"><span type="submit">注册</span></div>
+		<div class="btn" onclick="changePwd()" tapmode="submit-hover"><span type="submit">确认修改</span></div>
 		
 	</form>
 </body>
@@ -102,9 +98,93 @@
 <script type="text/javascript" src="../script/config.js"></script>
 <script type="text/javascript">
 
-function goback () {
-	api.closeWin({name:'login_body'})
-}
+
+	//修改密码
+	function changePwd()
+	{
+        var cur_password = $('#curPassword').val();
+        var new_password = $('#newPassword').val();
+        var comfirm_password = $('#comfirmPassword').val();
+
+
+        if(!cur_password)
+        {
+            api.toast({
+				msg:"当前密码不能为空",
+				duration:1000
+			});
+            return;
+        }
+
+        if(!new_password)
+        {
+            api.toast({
+                msg:"新密码不能为空",
+                duration:1000
+            });
+            return;
+        }
+        else if(new_password.length > 15)
+        {
+            api.toast({
+                msg:"新密码长度不能超过15",
+                duration:1000
+            });
+            return;
+        }
+
+        if(!comfirm_password)
+        {
+            api.toast({
+                msg:"新密码不能为空",
+                duration:1000
+            });
+            return;
+        }
+        else if(comfirm_password !== new_password)
+        {
+            api.toast({
+                msg:"两次密码输入不一致",
+                duration:1000
+            });
+            return;
+        }
+
+        var url = config.user.changePwd,
+			postData={cur_password:cur_password,new_password:new_password,comfirm_password:comfirm_password}
+
+        Quickos.api.post(url,postData,function(ret)
+        {
+            if(ret)
+            {
+                if(ret.success)
+                {
+                    api.toast(
+                        {
+                            msg:"修改成功",
+                            duration:1000
+                        });
+                    setTimeout(function()
+                    {
+                        api.closeWin();
+                    },1000)
+                }
+                else
+                {
+                    api.toast({
+                        msg:ret.errorText,
+                        duration:1000
+                    });
+                }
+            }
+        });
+
+    }
+    function goback ()
+	{
+		api.closeWin({name:'login_body'})
+	}
+
 	apiready = function() {
 		var header = $api.byId('topbar');
         $api.fixIos7Bar(header); 
@@ -120,42 +200,6 @@ function goback () {
     	bottomdivider.style.height = api.frameHeight - bottomHeight - formHeight - loginmore - 15 - 90 + 'px';
 
     };
-
-//注册操作
-	function signup()
-	{
-	    var name=$("#name").val();
-	    var password=$("#passwd").val();
-	    var repassword=$("#repasswd").val();
-	    var mobile=$("#mobile").val();
-		var url=config.user.signup;
-	    Quickos.api.post(url,{name:name,password1:password,password2:repassword,mobile:mobile},function(ret)
-		{
-		    if(ret)
-			{
-			    if(ret.success)
-				{
-				    api.toast(
-				        {
-							msg:"注册成功",
-							duration:1000
-						});
-				    setTimeout(function()
-					{
-					    api.closeWin();
-					},1000)
-				}
-				else
-				{
-				    $("#err-tip").text(ret.errorText);
-				    api.toast({
-						msg:ret.errorText,
-						duration:1000
-					});
-				}
-			}
-		});
-	}
 
 
 </script>

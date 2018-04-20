@@ -7,6 +7,8 @@ var config=
                 login:_BASE_URL+"/dinner/index.php?r=site/dologin",//登录
                 getUserInfo:_BASE_URL+"/dinner/index.php?r=site/GetUserInfo",//获取用户数据
                 logout:_BASE_URL+"/dinner/index.php?r=site/logoutAjax",//退出登录
+                changePwd:_BASE_URL+"/dinner/index.php?r=site/domodifyForApp",//修改密码
+                getUserDetail:_BASE_URL+"/dinner/index.php?r=site/userinfo",//获取用户更多信息
             },
         shop:
             {

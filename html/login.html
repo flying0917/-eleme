@@ -52,7 +52,7 @@
 <body>
     <div class="header" id="topbar">
         <div class="left" tapmode="headerhover" onclick="goback()">
-            <img src="../image/icon_drawer_burger.png" alt="" class="logoleft"><img src="../image/m_drawer_icon_home_selected.png" alt="" class="logo">
+            <img src="../image/icon_drawer_burger.png" alt="" class="logoleft">
             <span class="title">个人中心</span>
         </div>
     </div>
@@ -73,7 +73,8 @@
         </div>
 
         <div class="useritem">
-            <div class="shelf01" tapmode="itemhover">账户信息</div>
+            <div class="shelf01" tapmode="itemhover" onclick="openUserInfo()">用户信息</div>
+            <div class="shelf01" tapmode="itemhover" onclick="openChangePwd()">修改密码</div>
             <div class="shelf02" tapmode="itemhover" onclick="logout()">退出登录</div>
         </div>
     </div>
@@ -96,7 +97,61 @@ function goback () {
         api.closeWin({name:'login'});
     },500)
 }
+//打开修用户信息页面
+function openUserInfo()
+{
+    var isLogin=$api.getStorage("isLogin");
+    if(isLogin&&parseInt(isLogin)===1)
+    {
+        api.openWin ({
+            name: "userinfo",
+            url: './userinfo.html',
+            rect:{
+                x:0,
+                y:0,
+                w:'auto',
+                h:'auto'
+            },
+            bounces: false,
+            delay:200
+        });
+    }
+    else
+    {
+        api.toast({
+            msg:"请先登录",
+            duration:1000
+        });
+    }
+}
 
+//打开修改密码页面
+function openChangePwd()
+{
+    var isLogin=$api.getStorage("isLogin");
+    if(isLogin&&parseInt(isLogin)===1)
+    {
+        api.openWin ({
+            name: "changePwd",
+            url: './changePwd.html',
+            rect:{
+                x:0,
+                y:0,
+                w:'auto',
+                h:'auto'
+            },
+            bounces: false,
+            delay:200
+        });
+    }
+    else
+    {
+        api.toast({
+            msg:"请先登录",
+            duration:1000
+        });
+    }
+}
 function openNewWin (type) {
     api.openWin ({
         name: type,
@@ -133,26 +188,29 @@ apiready = function(){
     //退出登录
     logout=function()
     {
-        var url=config.user.logout;
-        console.log(url)
-        Quickos.api.get(url,function(ret)
+        if(confirm("您确定要退出登录吗？"))
         {
-            console.log("--------------"+JSON.stringify(ret))
-            if(ret)
+            var url=config.user.logout;
+            console.log(url)
+            Quickos.api.get(url,function(ret)
             {
-                if(ret.success)
+                console.log("--------------"+JSON.stringify(ret))
+                if(ret)
                 {
-                    //存储用户信息
-                    $api.rmStorage("member");
-                    $api.setStorage("isLogin",0);
-                    location.reload();
-                    api.sendEvent({
-                        name: 'init-homefixed',
-                        extra: {}
-                    });
+                    if(ret.success)
+                    {
+                        //存储用户信息
+                        $api.rmStorage("member");
+                        $api.setStorage("isLogin",0);
+                        location.reload();
+                        api.sendEvent({
+                            name: 'init-homefixed',
+                            extra: {}
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
     };
     function getUserinfo()
     {
